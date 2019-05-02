@@ -20,7 +20,12 @@ public class Comment extends Auditable {
 
     //link
     @ManyToOne
+    @NotNull
     private Link link;
 
 
+    public Comment(@NotNull String body, @NotNull Link link) {
+        this.body = body;
+        this.link = link;
+    }
 }

@@ -27,4 +27,12 @@ public class Link extends Auditable {
     @OneToMany(mappedBy = "link")
     private List<Comment> comments = new ArrayList<>();
 
+    public Link(@NotNull String titel, @NotNull String url) {
+        this.titel = titel;
+        this.url = url;
+    }
+
+    public void addComment(Comment tempComment) {
+        comments.add(tempComment);
+    }
 }
