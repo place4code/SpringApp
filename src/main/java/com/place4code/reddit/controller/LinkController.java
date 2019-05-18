@@ -1,6 +1,6 @@
 package com.place4code.reddit.controller;
 
-import com.place4code.reddit.domain.Link;
+import com.place4code.reddit.model.Link;
 import com.place4code.reddit.repo.LinkRepo;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,4 +1,4 @@
-package com.place4code.reddit.domain;
+package com.place4code.reddit.model;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;

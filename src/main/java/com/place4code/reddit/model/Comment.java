@@ -1,4 +1,4 @@
-package com.place4code.reddit.domain;
+package com.place4code.reddit.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
 package com.place4code.reddit.bootstrap;
 
-import com.place4code.reddit.domain.Link;
+import com.place4code.reddit.model.Link;
 import com.place4code.reddit.repo.CommentRepo;
 import com.place4code.reddit.repo.LinkRepo;
 import org.springframework.boot.CommandLineRunner;
