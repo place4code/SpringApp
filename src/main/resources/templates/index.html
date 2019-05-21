@@ -9,21 +9,32 @@
 
 <div class="container">
 
-    <div class="alert alert-light" role="alert" th:each="link : ${links}">
-        <h4 class="alert-heading" th:text="${link.titel}"></h4>
 
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">ID: <span th:text="${link.id}"></span></li>
-            <li class="list-group-item">createdBy: <span th:text="${link.createdBy}"></span></li>
-            <li class="list-group-item">creationDate: <span th:text="${link.creationDate}"></span></li>
-            <li class="list-group-item">lastModifiedBy: <span th:text="${link.lastModifiedBy}"></span></li>
-            <li class="list-group-item">lastModifiedDate: <span th:text="${link.lastModifiedDate}"></span></li>
-        </ul>
 
-        <hr>
-
-        <p class="mb-0"> <a th:href="${link.url}" class="alert-link" th:text="${link.url}"></a></p>
+    <!-- links -->
+    <div class="row link" th:each="link : ${links}">
+        <div class="col-1">
+            <div><a href="#" class="upvote"><i class="fas fa-arrow-up"></i></a></div>
+            <div><span class="votecount">3</span></div>
+            <div><a href="#" class="downvote"><i class="fas fa-arrow-down"></i></a></div>
+        </div>
+        <div class="col-11">
+            <p class="title">
+                <a class="title" th:href="@{'/link/' + ${link.id}}" target="_blank" th:text="${link.titel}"></a>
+                <span class="domain">(<a th:href="${link.url}" th:text="${link.getShortUrl()}"></a>)</span>
+            </p>
+            <p class="tagline ">submitted
+                <time class="live-timestamp" th:text="${link.getPrettyDifference()}"></time> by
+                <a href="profile.html" class="author" th:text="${link.createdBy}"></a>
+            </p>
+            <p>
+                <a th:href="@{'/link/' + ${link.id} + '#comments'}" class="comments" th:text="|${link.getComments().size()} comments|"><i class="fas fa-comments"></i> 8 comments</a>
+                <a href="#" class="share"><i class="fas fa-share-square"></i> share</a>
+            </p>
+        </div>
     </div>
+
+
 
 </div>
 

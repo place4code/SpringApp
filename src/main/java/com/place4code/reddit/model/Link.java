@@ -1,5 +1,7 @@
 package com.place4code.reddit.model;
 
+import com.place4code.myfeatures.MyTime;
+import com.place4code.myfeatures.MyURL;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -34,5 +36,13 @@ public class Link extends Auditable {
 
     public void addComment(Comment tempComment) {
         comments.add(tempComment);
+    }
+
+    public String getPrettyDifference() {
+        return MyTime.prettyDifference(getCreationDate());
+    }
+
+    public String getShortUrl() {
+        return MyURL.makeShortUrl(url);
     }
 }
