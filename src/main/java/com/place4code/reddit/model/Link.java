@@ -4,8 +4,10 @@ import com.place4code.myfeatures.MyTime;
 import com.place4code.myfeatures.MyURL;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +22,12 @@ public class Link extends Auditable {
     private Long id;
 
     @NotNull
+    @NotEmpty(message = "Please enter a title")
     private String titel;
 
     @NotNull
+    @NotEmpty(message = "Please enter a URL")
+    @URL(message = "Please enter a valid URL")
     private String url;
 
     //comments

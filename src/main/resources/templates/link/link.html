@@ -11,6 +11,10 @@
 
 
 
+    <div class="alert alert-success" role="alert" th:if="${success}">
+        Your new link was created
+    </div>
+
     <!-- links -->
     <div class="row link">
         <div class="col-1">
@@ -71,5 +75,6 @@
 
 </div>
 
+<section th:replace="~{layouts/main_layout :: bootstrap_js}"></section>
 </body>
 </html>

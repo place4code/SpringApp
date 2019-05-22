@@ -5,10 +5,14 @@ import com.place4code.reddit.repo.LinkRepo;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
@@ -21,12 +25,12 @@ public class LinkController {
         this.linkRepo = linkRepo;
     }
 
-    //index
+    // show all links
     @GetMapping("/")
     public String index(HttpServletRequest request, Model model) {
 
         int page = 0;
-        int size = 2;
+        int size = 10;
 
 
         if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
@@ -42,15 +46,41 @@ public class LinkController {
         return "index";
     }
 
+    // view a one Link or redirect to the list
     @GetMapping("/link/{id}")
     public String getLink(@PathVariable Long id, Model model) {
         Optional<Link> tempLink = linkRepo.findById(id);
         if (tempLink.isPresent()) {
             model.addAttribute("link", tempLink.get());
+            model.addAttribute("success", model.containsAttribute("success"));
             return "link/link";
         } else {
             return "redirect:/";
         }
+    }
+
+    // form view to create a new Link
+    @GetMapping("/link/submit")
+    public String createLinkForm(Model model) {
+        model.addAttribute("link", new Link());
+        return "link/submit";
+    }
+
+    @PostMapping("/link/submit")
+    public String createLink(@Valid Link link, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("link", link);
+            return "link/submit";
+        } else {
+            // save new Link in database
+            linkRepo.save(link);
+            redirectAttributes.addAttribute("id", link.getId())
+                              .addFlashAttribute("success", true);
+
+            return "redirect:/link/{id}";
+        }
+
     }
 
 

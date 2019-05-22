@@ -1,95 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>SpringApp - Spring Boot Reddit Clone</title>
-
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="static/libs/bootstrap/css/bootstrap.min.css" />
-
-    <!-- Custom styles for this template -->
-    <link href="static/css/springit.css" rel="stylesheet">
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Oswald|Roboto" rel="stylesheet">
-
-    <!-- Font Awesome (for icons) -->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layouts/main_layout :: head(title = 'SpringApp index')}">
 </head>
-
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-spring fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fa fa-leaf" aria-hidden="true"></i>
-                SpringApp
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/">
-                            <i class="fas fa-home" aria-hidden="true"></i>
-                        </a>
-                    </li>
-    
-                    <!-- if user is signed in -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="submit.html">
-                            <i class="fa fa-link" aria-hidden="true"></i> Submit Link</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="profile.html">
-                            <i class="fa fa-user" aria-hidden="true"></i> Account</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="fa fa-sign-out-alt" aria-hidden="true"></i> Sign Out</a>
-                    </li>
-    
-                    <!-- if user is not signed in -->
-                    <li class="nav-item">
-                        <a class="nav-link" href=login.html>
-                            <i class="fa fa-sign-in-alt" aria-hidden="true"></i> Sign In</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="register.html">
-                            <i class="fa fa-user-plus" aria-hidden="true"></i> Register</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<nav th:replace="~{layouts/main_layout :: nav}"></nav>
+<div th:replace="~{layouts/main_layout :: jumbotron}"></div>
 
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container" align="center">
-            <h2 class="display-4">Spring Boot Reddit Clone</h2>
-            <p class="lead">This is a reddit clone built using <a href="#">Spring Boot 2</a>, <a href="#"></a>Spring
-                Framework 5</a></p>
-            <a href="https://github.com/place4code/SpringApp" class="btn btn-success" target="_blank"><i
-                    class="fab fa-github"></i> Github Repo</a>
-    
-        </div>
-    </div>
-
-    <div class="container">
+<div class="container">
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6">
                 <h4>Submit Link</h4>
                 <br/>
-                <form method="POST" th:action="@{/submit-link}" th:object="${link}">
+                <form method="POST" th:action="@{/link/submit}" th:object="${link}">
                     <div class="form-group">
                         <label for="title">Title</label>
                         <input type="text"
@@ -97,18 +21,15 @@
                                 id="title"
                                 placeholder="Enter Title"
                                 required="required"
-                                th:field="*{title}">
-                        <small th:errors="*{title}" style="color:red;"></small>
+                                th:field="*{titel}">
+                        <small th:errors="*{titel}" style="color:red;"></small>
                     </div>
                     <div class="form-group">
                         <label for="url">URL</label>
                         <input type="url" class="form-control" id="url" placeholder="URL" required="required" th:field="*{url}">
                         <small th:errors="*{url}" style="color:red;"></small>
                     </div>
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea class="form-control" id="description" rows="3" th:field="*{description}"></textarea>
-                    </div>
+
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
@@ -119,6 +40,6 @@
     <!-- Bootstrap core JavaScript -->
 
 
+<section th:replace="~{layouts/main_layout :: bootstrap_js}"></section>
 </body>
-
 </html>
