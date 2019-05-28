@@ -30,6 +30,7 @@ public class User implements UserDetails {
     private String email;
 
     @NotNull
+    @Size(min = 8, max = 128)
     private String password;
 
     @NotNull
@@ -83,4 +84,5 @@ public class User implements UserDetails {
     public void addRoles(Set<Role> roles) {
         roles.forEach(this::addRole);
     }
+
 }

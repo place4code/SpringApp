@@ -23,7 +23,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         Optional<User> user = userRepo.findByEmail(email);
         if (!user.isPresent()) {
-            System.out.println("blad");
             throw new UsernameNotFoundException(email);
 
         }
