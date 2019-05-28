@@ -1,12 +1,19 @@
 package com.place4code.reddit.bootstrap;
 
 import com.place4code.reddit.model.Link;
+import com.place4code.reddit.model.Role;
+import com.place4code.reddit.model.User;
 import com.place4code.reddit.repo.CommentRepo;
 import com.place4code.reddit.repo.LinkRepo;
+import com.place4code.reddit.repo.RoleRepo;
+import com.place4code.reddit.repo.UserRepo;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 @Component
@@ -14,10 +21,14 @@ public class DatabaseLoader implements CommandLineRunner {
 
     private LinkRepo linkRepo;
     private CommentRepo commentRepo;
+    private RoleRepo roleRepo;
+    private UserRepo userRepo;
 
-    public DatabaseLoader(LinkRepo linkRepo, CommentRepo commentRepo) {
+    public DatabaseLoader(LinkRepo linkRepo, CommentRepo commentRepo, RoleRepo roleRepo, UserRepo userRepo) {
         this.linkRepo = linkRepo;
         this.commentRepo = commentRepo;
+        this.roleRepo = roleRepo;
+        this.userRepo = userRepo;
     }
 
     @Override
@@ -45,5 +56,32 @@ public class DatabaseLoader implements CommandLineRunner {
         long linkCount = linkRepo.count();
         System.out.println("Number of links in the database: " + linkCount );
 
+        addUsersAndRoles();
     }
+
+    private void addUsersAndRoles() {
+
+        System.out.println("add user roles and ");
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String secret = "{bcrypt}" + encoder.encode("password");
+
+        Role userRole = new Role("ROLE_USER");
+        roleRepo.save(userRole);
+        Role adminRole = new Role("ROLE_ADMIN");
+        roleRepo.save(adminRole);
+
+        User user = new User("user@gmail.com",secret,true);
+        user.addRole(userRole);
+        userRepo.save(user);
+
+        User admin = new User("admin@gmail.com",secret,true);
+        admin.addRole(adminRole);
+        userRepo.save(admin);
+
+        User master = new User("master@gmail.com",secret,true);
+        master.addRoles(new HashSet<>(Arrays.asList(userRole,adminRole)));
+        userRepo.save(master);
+
+    }
+
 }

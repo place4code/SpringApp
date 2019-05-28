@@ -30,7 +30,6 @@ public class User implements UserDetails {
     private String email;
 
     @NotNull
-    @Size(min = 8, max = 32)
     private String password;
 
     @NotNull
@@ -44,6 +43,12 @@ public class User implements UserDetails {
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}
     )
     private Set<Role> roles = new HashSet<>();
+
+    public User(String email, String password, boolean enabled) {
+        this.email = email;
+        this.password = password;
+        this.enabled = enabled;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -69,5 +74,13 @@ public class User implements UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
+    }
+
+    public void addRole(Role role) {
+        roles.add(role);
+    }
+
+    public void addRoles(Set<Role> roles) {
+        roles.forEach(this::addRole);
     }
 }
