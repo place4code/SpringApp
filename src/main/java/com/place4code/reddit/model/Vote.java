@@ -22,4 +22,6 @@ public class Vote {
     @ManyToOne
     private Link link;
 
+    public Vote(short direction, Link link) {
+    }
 }
