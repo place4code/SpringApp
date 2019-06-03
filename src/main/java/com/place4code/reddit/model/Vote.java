@@ -22,6 +22,8 @@ public class Vote {
     @ManyToOne
     private Link link;
 
-    public Vote(short direction, Link link) {
+    public Vote(@NotNull short direction, @NotNull Link link) {
+        this.direction = direction;
+        this.link = link;
     }
 }
