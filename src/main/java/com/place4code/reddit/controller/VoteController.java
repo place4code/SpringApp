@@ -4,6 +4,7 @@ import com.place4code.reddit.model.Link;
 import com.place4code.reddit.model.Vote;
 import com.place4code.reddit.repo.LinkRepo;
 import com.place4code.reddit.repo.VoteRepo;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,8 +22,9 @@ public class VoteController {
         this.linkRepo = linkRepo;
     }
 
-                //vote/link/linkId/direction/direction/votesCounter/votesCounter
+    @Secured({"ROLE_USER"})
     @GetMapping("/vote/link/{id}/direction/{direction}/votesCounter/{votesCounter}")
+                //vote/link/linkId/direction/direction/votesCounter/votesCounter
     public int vote(@PathVariable Long id,
                     @PathVariable short direction,
                     @PathVariable int votesCounter) {
