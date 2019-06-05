@@ -2,8 +2,9 @@ package com.place4code.reddit.model;
 
 import com.place4code.myfeatures.MyTime;
 import com.place4code.myfeatures.MyURL;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter @Setter
 @NoArgsConstructor
 public class Link extends Auditable {
 

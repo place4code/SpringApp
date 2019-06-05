@@ -1,8 +1,11 @@
 package com.place4code.reddit.controller;
 
+import com.place4code.reddit.model.Comment;
 import com.place4code.reddit.model.Link;
+import com.place4code.reddit.repo.CommentRepo;
 import com.place4code.reddit.repo.LinkRepo;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,9 +23,11 @@ public class LinkController {
 
 
     private LinkRepo linkRepo;
+    private CommentRepo commentRepo;
 
-    public LinkController(LinkRepo linkRepo) {
+    public LinkController(LinkRepo linkRepo, CommentRepo commentRepo) {
         this.linkRepo = linkRepo;
+        this.commentRepo = commentRepo;
     }
 
     // show all links
@@ -51,8 +56,15 @@ public class LinkController {
     public String getLink(@PathVariable Long id, Model model) {
         Optional<Link> tempLink = linkRepo.findById(id);
         if (tempLink.isPresent()) {
-            model.addAttribute("link", tempLink.get());
+
+            Link link = tempLink.get();
+            Comment comment = new Comment();
+            comment.setLink(link);
+
+            model.addAttribute("comment", comment);
+            model.addAttribute("link", link);
             model.addAttribute("success", model.containsAttribute("success"));
+
             return "link/link";
         } else {
             return "redirect:/";
@@ -81,6 +93,19 @@ public class LinkController {
             return "redirect:/link/{id}";
         }
 
+    }
+
+    @Secured({"ROLE_USER"})
+    @PostMapping("/link/comments")
+    public String createComment(@Valid Comment comment, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            // to do with error
+        } else {
+            commentRepo.save(comment);
+        }
+
+        return "redirect:/link/" + comment.getLink().getId();
     }
 
 

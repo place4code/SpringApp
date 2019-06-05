@@ -1,13 +1,15 @@
 package com.place4code.reddit.model;
 
-import lombok.Data;
+import com.place4code.myfeatures.MyTime;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Data
+@Getter @Setter
 @NoArgsConstructor
 public class Comment extends Auditable {
 
@@ -18,7 +20,6 @@ public class Comment extends Auditable {
     @NotNull
     private String body;
 
-    //link
     @ManyToOne
     @NotNull
     private Link link;
@@ -27,5 +28,9 @@ public class Comment extends Auditable {
     public Comment(@NotNull String body, @NotNull Link link) {
         this.body = body;
         this.link = link;
+    }
+
+    public String getPrettyDifference() {
+        return MyTime.prettyDifference(getCreationDate());
     }
 }

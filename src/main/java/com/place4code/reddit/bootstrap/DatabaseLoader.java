@@ -1,5 +1,6 @@
 package com.place4code.reddit.bootstrap;
 
+import com.place4code.reddit.model.Comment;
 import com.place4code.reddit.model.Link;
 import com.place4code.reddit.model.Role;
 import com.place4code.reddit.model.User;
@@ -15,6 +16,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.stream.Stream;
 
 @Component
 public class DatabaseLoader implements CommandLineRunner {
@@ -49,8 +51,18 @@ public class DatabaseLoader implements CommandLineRunner {
         links.put("File download example using Spring REST Controller","https://www.jeejava.com/file-download-example-using-spring-rest-controller/");
 
         links.forEach((k,v) -> {
-            linkRepo.save(new Link(k,v));
-            // we will do something with comments later
+            Link link = new Link(k, v);
+            linkRepo.save(link);
+            // add comments to the link:
+            Comment spring = new Comment("Thank you for this link related to Spring Boot. I love it, great post!",link);
+            Comment security = new Comment("I love that you're talking about Spring Security",link);
+            Comment pwa = new Comment("What is this Progressive Web App thing all about? PWAs sound really cool.",link);
+
+            Stream.of(spring, security, pwa).forEach(c -> {
+                commentRepo.save(c);
+                link.addComment(c);
+            });
+
         });
 
         long linkCount = linkRepo.count();
