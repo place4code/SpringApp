@@ -2,7 +2,7 @@ package com.place4code.reddit.controller;
 
 import com.place4code.reddit.model.Comment;
 import com.place4code.reddit.model.Link;
-import com.place4code.reddit.repo.CommentRepo;
+import com.place4code.reddit.service.CommentService;
 import com.place4code.reddit.service.LinkService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -20,25 +20,25 @@ import java.util.Optional;
 public class LinkController {
 
 
-    private LinkService linkRepo;
-    private CommentRepo commentRepo;
+    private LinkService linkService;
+    private CommentService commentService;
 
-    public LinkController(LinkService linkRepo, CommentRepo commentRepo) {
-        this.linkRepo = linkRepo;
-        this.commentRepo = commentRepo;
+    public LinkController(LinkService linkService, CommentService commentService) {
+        this.linkService = linkService;
+        this.commentService = commentService;
     }
 
     // show all links
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("links", linkRepo.findAll());
+        model.addAttribute("links", linkService.findAll());
         return "index";
     }
 
     // view a one Link or redirect to the list
     @GetMapping("/link/{id}")
     public String getLink(@PathVariable Long id, Model model) {
-        Optional<Link> tempLink = linkRepo.findById(id);
+        Optional<Link> tempLink = linkService.findById(id);
         if (tempLink.isPresent()) {
 
             Link link = tempLink.get();
@@ -70,7 +70,7 @@ public class LinkController {
             return "link/submit";
         } else {
             // save new Link in database
-            linkRepo.save(link);
+            linkService.save(link);
             redirectAttributes.addAttribute("id", link.getId())
                               .addFlashAttribute("success", true);
 
@@ -86,7 +86,7 @@ public class LinkController {
         if (bindingResult.hasErrors()) {
             // to do with error
         } else {
-            commentRepo.save(comment);
+            commentService.save(comment);
         }
 
         return "redirect:/link/" + comment.getLink().getId();

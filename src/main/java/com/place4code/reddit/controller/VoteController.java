@@ -2,8 +2,8 @@ package com.place4code.reddit.controller;
 
 import com.place4code.reddit.model.Link;
 import com.place4code.reddit.model.Vote;
-import com.place4code.reddit.repo.LinkRepo;
-import com.place4code.reddit.repo.VoteRepo;
+import com.place4code.reddit.service.LinkService;
+import com.place4code.reddit.service.VoteService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,12 +14,12 @@ import java.util.Optional;
 @RestController
 public class VoteController {
 
-    private VoteRepo voteRepo;
-    private LinkRepo linkRepo;
+    private VoteService voteService;
+    private LinkService linkService;
 
-    public VoteController(VoteRepo voteRepo, LinkRepo linkRepo) {
-        this.voteRepo = voteRepo;
-        this.linkRepo = linkRepo;
+    public VoteController(VoteService voteService, LinkService linkService) {
+        this.voteService = voteService;
+        this.linkService = linkService;
     }
 
     @Secured({"ROLE_USER"})
@@ -30,18 +30,18 @@ public class VoteController {
                     @PathVariable int votesCounter) {
 
         //try to find a link
-        Optional<Link> tempLink= linkRepo.findById(id);
+        Optional<Link> tempLink= linkService.findById(id);
 
         if (tempLink.isPresent()) {
 
             //save vote
             Link link = tempLink.get();
             Vote vote = new Vote(direction, link);
-            voteRepo.save(vote);
+            voteService.save(vote);
 
             //update counter
             link.setVotesCounter(votesCounter + direction);
-            linkRepo.save(link);
+            linkService.save(link);
 
             return votesCounter + direction;
 
