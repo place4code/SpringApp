@@ -3,8 +3,7 @@ package com.place4code.reddit.controller;
 import com.place4code.reddit.model.Comment;
 import com.place4code.reddit.model.Link;
 import com.place4code.reddit.repo.CommentRepo;
-import com.place4code.reddit.repo.LinkRepo;
-import org.springframework.data.domain.PageRequest;
+import com.place4code.reddit.service.LinkService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Optional;
 
@@ -22,32 +20,18 @@ import java.util.Optional;
 public class LinkController {
 
 
-    private LinkRepo linkRepo;
+    private LinkService linkRepo;
     private CommentRepo commentRepo;
 
-    public LinkController(LinkRepo linkRepo, CommentRepo commentRepo) {
+    public LinkController(LinkService linkRepo, CommentRepo commentRepo) {
         this.linkRepo = linkRepo;
         this.commentRepo = commentRepo;
     }
 
     // show all links
     @GetMapping("/")
-    public String index(HttpServletRequest request, Model model) {
-
-        int page = 0;
-        int size = 10;
-
-
-        if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
-            page = Integer.parseInt(request.getParameter("page")) - 1;
-        }
-
-        if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
-            size = Integer.parseInt(request.getParameter("size"));
-        }
-
-
-        model.addAttribute("links", linkRepo.findAll(PageRequest.of(page, size)));
+    public String index(Model model) {
+        model.addAttribute("links", linkRepo.findAll());
         return "index";
     }
 
