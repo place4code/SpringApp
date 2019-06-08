@@ -29,7 +29,7 @@
             </p>
             <p class="tagline ">submitted
                 <time class="live-timestamp" th:text="${link.getPrettyDifference()}"></time> by
-                <a href="profile.html" class="author" th:text="${link.createdBy}"></a>
+                <a th:href="@{'/user/' + ${comment.getLink().getUser().getLogin()}}" class="author" th:text="${link.getUser().getLogin()}"></a>
             </p>
             <p>
                 <a th:href="${link.url}" class="permalink"><i class="fas fa-link"></i> <span th:text="${link.url}"></span></a>
@@ -63,7 +63,7 @@
         <div class="row comment" th:each="comment : ${link.getComments()}">
             <div class="col-1">&nbsp;</div>
             <div class="col-11">
-                <span><a href="#"><i class='far fa-user'></i> <span th:text="${comment.getCreatedBy()}"></span></a></span>
+                <span><a th:href="@{'/user/' + ${comment.getLink().getUser().getLogin()}}"><i class='far fa-user'></i> <span th:text="${comment.getLink().getUser().getLogin()}"></span></a></span>
                 <span><i class="far fa-clock"></i> <span th:text="${comment.getPrettyDifference()}"></span></span>
                 <p class="body" th:text="${comment.getBody()}"></p>
                 <a href="#" class="permalink"><i class="fas fa-link"></i> permalink</a>

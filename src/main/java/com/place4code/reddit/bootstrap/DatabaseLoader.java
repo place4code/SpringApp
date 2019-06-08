@@ -26,6 +26,8 @@ public class DatabaseLoader implements CommandLineRunner {
     private RoleRepo roleRepo;
     private UserRepo userRepo;
 
+    private Map<String, User> users = new HashMap<>();
+
     public DatabaseLoader(LinkRepo linkRepo, CommentRepo commentRepo, RoleRepo roleRepo, UserRepo userRepo) {
         this.linkRepo = linkRepo;
         this.commentRepo = commentRepo;
@@ -36,6 +38,7 @@ public class DatabaseLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        addUsersAndRoles();
 
         Map<String,String> links = new HashMap<>();
         links.put("Securing Spring Boot APIs and SPAs with OAuth 2.0","https://auth0.com/blog/securing-spring-boot-apis-and-spas-with-oauth2/?utm_source=reddit&utm_medium=sc&utm_campaign=springboot_spa_securing");
@@ -52,6 +55,7 @@ public class DatabaseLoader implements CommandLineRunner {
 
         links.forEach((k,v) -> {
             Link link = new Link(k, v);
+            link.setUser(users.get("exampleUser"));
             linkRepo.save(link);
             // add comments to the link:
             Comment spring = new Comment("Thank you for this link related to Spring Boot. I love it, great post!",link);
@@ -68,7 +72,6 @@ public class DatabaseLoader implements CommandLineRunner {
         long linkCount = linkRepo.count();
         System.out.println("Number of links in the database: " + linkCount );
 
-        addUsersAndRoles();
     }
 
     private void addUsersAndRoles() {
@@ -82,15 +85,16 @@ public class DatabaseLoader implements CommandLineRunner {
         Role adminRole = new Role("ROLE_ADMIN");
         roleRepo.save(adminRole);
 
-        User user = new User("user@gmail.com",secret,true);
+        User user = new User("user@gmail.com",secret,true, "exampleUser");
         user.addRole(userRole);
         userRepo.save(user);
+        users.put("exampleUser", user);
 
-        User admin = new User("admin@gmail.com",secret,true);
+        User admin = new User("admin@gmail.com",secret,true, "admin");
         admin.addRole(adminRole);
         userRepo.save(admin);
 
-        User master = new User("master@gmail.com",secret,true);
+        User master = new User("master@gmail.com",secret,true, "master");
         master.addRoles(new HashSet<>(Arrays.asList(userRole,adminRole)));
         userRepo.save(master);
 

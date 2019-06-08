@@ -1,12 +1,12 @@
 package com.place4code.reddit.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
@@ -45,10 +45,16 @@ public class User implements UserDetails {
     )
     private Set<Role> roles = new HashSet<>();
 
-    public User(String email, String password, boolean enabled) {
+    @NotNull
+    @NotEmpty(message = "Please enter login.")
+    @Column(nullable = false, unique = true)
+    private String login;
+
+    public User(String email, String password, boolean enabled, String login) {
         this.email = email;
         this.password = password;
         this.enabled = enabled;
+        this.login = login;
     }
 
     @Override

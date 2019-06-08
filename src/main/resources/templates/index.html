@@ -25,7 +25,7 @@
             </p>
             <p class="tagline ">submitted
                 <time class="live-timestamp" th:text="${link.getPrettyDifference()}"></time> by
-                <a href="profile.html" class="author" th:text="${link.createdBy}"></a>
+                <a th:href="@{'/user/' + ${link.getUser().getLogin()}}" class="author" th:text="${link.getUser().getLogin()}"></a>
             </p>
             <p>
                 <a th:href="@{'/link/' + ${link.id} + '#comments'}" class="comments" th:text="|${link.getComments().size()} comments|"><i class="fas fa-comments"></i> 8 comments</a>
