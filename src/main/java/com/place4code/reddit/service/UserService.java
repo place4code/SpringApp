@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -30,7 +31,7 @@ public class UserService {
         //set the password
         String secret = "{bcrypt}" + encoder.encode(user.getPassword());
         user.setPassword(secret);
-        user.setEnabled(false);
+        user.setEnabled(true);
 
         //add the roles
         user.addRole(roleService.findByName("ROLE_USER"));
@@ -59,4 +60,7 @@ public class UserService {
         // to do
     }
 
+    public Optional<User> findByEmail(String email) {
+        return userRepo.findByEmail(email);
+    }
 }
