@@ -9,6 +9,14 @@
 
 <div class="container">
 
+    <div class="row" th:if="${success}">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 alert alert-success" role="alert" >
+            You have successfully registered with us. Please check your email to activate your account.
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+
         <!-- User Registration form -->
     <form class="form-horizontal" role="form" method="POST" th:action="@{/register}" th:object="${user}" th:if="!${success}">
         <div class="row">
@@ -18,7 +26,6 @@
                 <hr>
             </div>
         </div>
-        <!--
         <div class="row" th:if="${validationErrors}">
             <div class="col-md-3"></div>
             <div class="col-md-6">
@@ -29,7 +36,6 @@
             </span>
             </div>
         </div>
-        -->
         <div class="row">
             <div class="col-md-3 field-label-responsive">
                 <label for="login">Login</label>
