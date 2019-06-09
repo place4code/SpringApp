@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -58,9 +57,5 @@ public class UserService {
 
     public void sendActivationEmail(User user) {
         // to do
-    }
-
-    public Optional<User> findByEmail(String email) {
-        return userRepo.findByEmail(email);
     }
 }

@@ -1,12 +1,10 @@
 package com.place4code.reddit.controller;
 
-import com.place4code.reddit.config.AuditorAwareImpl;
 import com.place4code.reddit.model.Comment;
 import com.place4code.reddit.model.Link;
 import com.place4code.reddit.model.User;
 import com.place4code.reddit.service.CommentService;
 import com.place4code.reddit.service.LinkService;
-import com.place4code.reddit.service.UserService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -26,14 +24,10 @@ public class LinkController {
 
     private LinkService linkService;
     private CommentService commentService;
-    private UserService userService;
-    AuditorAwareImpl auditorAware;
 
-    public LinkController(LinkService linkService, CommentService commentService, UserService userService) {
+    public LinkController(LinkService linkService, CommentService commentService) {
         this.linkService = linkService;
         this.commentService = commentService;
-        this.userService = userService;
-        auditorAware = new AuditorAwareImpl();
     }
 
     // show all links
