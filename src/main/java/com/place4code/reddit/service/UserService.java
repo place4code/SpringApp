@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -33,7 +34,11 @@ public class UserService {
         String secret = "{bcrypt}" + encoder.encode(user.getPassword());
         user.setPassword(secret);
         user.setConfirmPassword(secret);
-        user.setEnabled(true);
+
+        // random String for activation account
+        user.setActivationCode(String.valueOf(UUID.randomUUID()));
+
+        user.setEnabled(false);
 
         //add the roles
         user.addRole(roleService.findByName("ROLE_USER"));

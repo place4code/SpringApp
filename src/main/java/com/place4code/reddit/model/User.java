@@ -59,6 +59,8 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String login;
 
+    private String activationCode;
+
     public User(String email, String password, boolean enabled, String login) {
         this.email = email;
         this.password = password;
