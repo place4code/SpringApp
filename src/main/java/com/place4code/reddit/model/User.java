@@ -1,5 +1,6 @@
 package com.place4code.reddit.model;
 
+import com.place4code.reddit.validator.PasswordMatch;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @NoArgsConstructor
+@PasswordMatch
 public class User implements UserDetails {
 
     @Id
@@ -35,6 +37,10 @@ public class User implements UserDetails {
     @NotNull
     @Size(min = 8, max = 128)
     private String password;
+
+    @Transient
+    @NotEmpty(message = "Please enter password confirmation")
+    private String confirmPassword;
 
     @NotNull
     @Column(nullable = false)

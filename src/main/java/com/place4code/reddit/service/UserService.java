@@ -30,6 +30,7 @@ public class UserService {
         //set the password
         String secret = "{bcrypt}" + encoder.encode(user.getPassword());
         user.setPassword(secret);
+        user.setConfirmPassword(secret);
         user.setEnabled(true);
 
         //add the roles
