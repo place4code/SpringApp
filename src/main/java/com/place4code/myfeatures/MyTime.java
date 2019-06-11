@@ -13,21 +13,21 @@ public class MyTime {
 
 
         if (period < 120) {
-            return "a moment ago.";
+            return "a moment ago";
         }
         if (period >= 120 && period < 60*60) {
-            return period / 60 + " minutes ago.";
+            return period / 60 + " minutes ago";
         }
         if (period >= 60*60 && period <= 2*60*60) {
-            return diff.toHours() + " hour ago.";
+            return diff.toHours() + " hour ago";
         }
         if (period >= 2*60*60 && period <= 24*60*60) {
-            return diff.toHours() + " hours ago.";
+            return diff.toHours() + " hours ago";
         }
         if (period > 24*60*60 && period < 2*24*60*60) {
-            return diff.toDays() + " day ago.";
+            return diff.toDays() + " day ago";
         } else {
-            return diff.toDays() + " days ago.";
+            return diff.toDays() + " days ago";
         }
 
     }

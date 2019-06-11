@@ -55,6 +55,7 @@
                     </form>
                 </li>
 
+
                 <!-- if user is not signed in -->
                 <li class="nav-item" sec:authorize="!isAuthenticated()">
                     <a class="nav-link" th:href="@{/login}">
@@ -64,6 +65,10 @@
                     <a class="nav-link" th:href="@{/register}">
                         <i class="fa fa-user-plus" aria-hidden="true"></i> Register</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://github.com/place4code/SpringApp">
+                        <i class="fab fa-github"></i> GitHub</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -71,10 +76,9 @@
 
 <div class="jumbotron jumbotron-fluid" th:fragment="jumbotron">
     <div class="container" align="center">
-        <h2 class="display-4">Spring Boot Reddit Clone</h2>
-        <p class="lead">This is a reddit clone built using <a href="#">Spring Boot 2</a>, <a href="#"></a>Spring Framework 5</a></p>
-        <a href="https://github.com/place4code/SpringApp" class="btn btn-success" target="_blank"><i class="fab fa-github"></i>  Github Repo</a>
-
+        <br>
+        <img th:src="@{/images/bg.png}"/>
+        <br>
     </div>
 </div>
 

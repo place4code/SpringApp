@@ -16,62 +16,75 @@
     </div>
 
     <!-- links -->
-    <div class="row link">
-        <div class="col-1">
-            <div><a href="#" class="upvote" th:data-id="${link.id}"><i class="fas fa-arrow-up"></i></a></div>
-            <div><span th:id="|votesCounter-${link.id}|" class="votesCounter" th:text="${link.getVotesCounter()}">0</span></div>
-            <div><a href="#" class="downvote" th:data-id="${link.id}" th:disabled="true"><i class="fas fa-arrow-down"></i></a></div>
-        </div>
-        <div class="col-11">
-            <p class="title">
-                <a class="title" th:href="@{'/link/' + ${link.id}}" target="_blank" th:text="${link.titel}"></a>
-                <span class="domain">(<a th:href="${link.url}" th:text="${link.getShortUrl()}"></a>)</span>
-            </p>
-            <p class="tagline ">submitted
-                <time class="live-timestamp" th:text="${link.getPrettyDifference()}"></time> by
-                <a th:href="@{'/user/' + ${comment.getLink().getUser().getLogin()}}" class="author" th:text="${link.getUser().getLogin()}"></a>
-            </p>
-            <p>
-                <a th:href="${link.url}" class="permalink"><i class="fas fa-link"></i> <span th:text="${link.url}"></span></a>
-            </p>
-            <p>
-                <a href="#" class="share"><i class="fas fa-share-square"></i> share</a>
-            </p>
-        </div>
-    </div>
 
 
-    <!-- link comments -->
-    <div id="comments" class="comments">
-        <div class="row header">
-            <div class="col-1">&nbsp;</div>
-            <div class="col-11 title" th:text="|all  ${link.getComments().size()} comments|"></div>
-        </div>
-        <div class="row addcomment" sec:authorize="hasRole('ROLE_USER')">
-            <div class="col-1">&nbsp;</div>
-            <div class="col-11">
-                <form id="formAddComment" method="POST" th:action="@{/link/comments}" th:object="${comment}">
-                    <input type="hidden" th:field="*{link}"/>
-                    <div class="form-group">
-                        <textarea class="form-control" id="comment" rows="3" th:field="*{body}"></textarea>
+        <div class="card">
+            <ul class="list-group list-group-flush text-center">
+                <li class="list-group-item">
+                    <div>
+                        <a href="#" class="upvote" th:data-id="${link.id}"><i class="fas fa-arrow-up"></i></a>
+                        <span th:id="|votesCounter-${link.id}|" class="votesCounter" th:text="${link.getVotesCounter()}">0</span>
+                        <a href="#" class="downvote" th:data-id="${link.id}" th:disabled="true"><i class="fas fa-arrow-down"></i></a>
                     </div>
-                    <button type="submit" class="btn btn-primary">Add Comment</button>
-                </form>
+                    <span th:text="${link.titel}">Title</span> <span class="domain">(<a th:href="${link.url}" th:text="${link.getShortUrl()}"></a>)</span>
+                </li>
+            </ul>
+            <div class="card-header text-center">
+                <time class="live-timestamp" th:text="${link.getPrettyDifference()}"></time> by
+                <a th:href="@{'/user/' + ${link.getUser().getLogin()}}" class="author" th:text="${link.getUser().getLogin()}"></a>
             </div>
-        </div>
-        <!-- single comment -->
-        <div class="row comment" th:each="comment : ${link.getComments()}">
-            <div class="col-1">&nbsp;</div>
-            <div class="col-11">
-                <span><a th:href="@{'/user/' + ${comment.getCreatedBy()}}"><i class='far fa-user'></i> <span th:text="${comment.getLink().getUser().getLogin()}"></span></a></span>
-                <span><i class="far fa-clock"></i> <span th:text="${comment.getPrettyDifference()}"></span></span>
-                <p class="body" th:text="${comment.getBody()}"></p>
-                <a href="#" class="permalink"><i class="fas fa-link"></i> permalink</a>
-                <a href="#" class="like"><i class="far fa-thumbs-up"></i> Like</a>
+            <div class="card-body text-center">
+                <p class="card-title">
+                    <a th:href="${link.url}" class="permalink"><i class="fas fa-globe-europe"></i> <span th:text="${link.url}"></span></a>
+                </p>
             </div>
-        </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
 
-    </div>
+                    <!-- link comments -->
+                    <div id="comments" class="comments">
+                        <div class="row header">
+                            <div class="col-1">&nbsp;</div>
+                            <div class="col-11" th:text="|all  ${link.getComments().size()} comments:|"></div>
+                        </div>
+
+                        <!-- single comment -->
+                        <div class="row comment" th:each="comment : ${link.getComments()}">
+                            <div class="col-1">&nbsp;</div>
+                            <div class="col-11">
+                                <span><a th:href="@{'/user/' + ${comment.getCreatedBy()}}"><i class='far fa-user'></i> <span th:text="${comment.getLink().getUser().getLogin()}"></span></a></span>
+                                <span><i class="far fa-clock"></i> <span th:text="${comment.getPrettyDifference()}"></span></span>
+                                <p class="body" th:text="${comment.getBody()}"></p>
+                                <a href="#" class="permalink"><i class="fas fa-link"></i> permalink</a>
+                                <a href="#" class="like"><i class="far fa-thumbs-up"></i> Like</a>
+                            </div>
+                        </div>
+                        <hr class="my-4">
+                        <div class="row addcomment" sec:authorize="hasRole('ROLE_USER')">
+                            <div class="col-1">&nbsp;</div>
+                            <div class="col-11">
+                                <form id="formAddComment" method="POST" th:action="@{/link/comments}" th:object="${comment}">
+                                    <input type="hidden" th:field="*{link}"/>
+                                    <div class="form-group">
+                                        <textarea class="form-control" id="comment" rows="3" th:field="*{body}"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-outline-success">Add Comment</button>
+                                </form>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+        <br>
+
+
+
+
+
 
 
 
