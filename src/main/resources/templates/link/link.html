@@ -52,7 +52,7 @@
                         <div class="row comment" th:each="comment : ${link.getComments()}">
                             <div class="col-1">&nbsp;</div>
                             <div class="col-11">
-                                <span><a th:href="@{'/user/' + ${comment.getCreatedBy()}}"><i class='far fa-user'></i> <span th:text="${comment.getLink().getUser().getLogin()}"></span></a></span>
+                                <span><a th:href="@{'/user/' + ${comment.getCreatedBy()}}"><i class='far fa-user'></i> <span th:text="${comment.getLogin()}"></span></a></span>
                                 <span><i class="far fa-clock"></i> <span th:text="${comment.getPrettyDifference()}"></span></span>
                                 <p class="body" th:text="${comment.getBody()}"></p>
                                 <a href="#" class="permalink"><i class="fas fa-link"></i> permalink</a>

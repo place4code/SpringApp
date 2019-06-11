@@ -24,6 +24,8 @@ public class Comment extends Auditable {
     @NotNull
     private Link link;
 
+    private String login;
+
 
     public Comment(@NotNull String body, @NotNull Link link) {
         this.body = body;

@@ -63,6 +63,7 @@ public class DatabaseLoader implements CommandLineRunner {
             Comment pwa = new Comment("What is this Progressive Web App thing all about? PWAs sound really cool.",link);
 
             Stream.of(spring, security, pwa).forEach(c -> {
+                c.setLogin("bootstrap");
                 commentRepo.save(c);
                 link.addComment(c);
             });

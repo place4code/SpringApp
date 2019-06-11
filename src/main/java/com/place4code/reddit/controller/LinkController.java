@@ -94,6 +94,10 @@ public class LinkController {
         if (bindingResult.hasErrors()) {
             // to do with error
         } else {
+
+            User tempUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+            comment.setLogin(tempUser.getLogin());
             commentService.save(comment);
         }
 
