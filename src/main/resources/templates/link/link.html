@@ -86,6 +86,24 @@
 
 </div>
 
+
+<script sec:authorize="isFullyAuthenticated()">
+    const allvotes = document.querySelectorAll(".upvote, .downvote");
+    for(let i=0; i<allvotes.length; i++) {
+        let className = allvotes[i].className;
+        allvotes[i].addEventListener('click', function (event) {
+            const direction = className === 'upvote' ? 1 : -1;
+            const linkID = this.getAttribute("data-id");
+            const voteSum = document.getElementById('votesCounter-' + linkID);
+            const voteSumValue = voteSum.innerHTML;
+
+            fetch(`http://localhost:8090/vote/link/${linkID}/direction/${direction}/votesCounter/${voteSumValue}`)
+                .then(response => response.json())
+                .then(data => voteSum.innerHTML = data)
+                .catch(err => console.error(err));
+        });
+    }
+</script>
 <section th:replace="~{layouts/main_layout :: bootstrap_js}"></section>
 </body>
 </html>

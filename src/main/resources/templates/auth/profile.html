@@ -14,71 +14,101 @@
     <div id="profile" class="container">
 
         <div class="row">
-            <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">Overview</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Posts</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Comments</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Preferences</a>
-                </li>
-            </ul>
-        </div>
 
-        <div class="row">
+            <div class="col-lg-8">
 
-            <div class="col-8">
-                <div class="row">
-                    <div class="card col-12" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">What's new in place4code</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">submitted 17 days ago by place4code</h6>
-                            <p class="card-text">short content</p>
-                            <a href="#" class="card-link">89 Comments</a>
-                            <a href="#" class="card-link">Share</a>
+
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="thome-tab" data-toggle="tab" href="#thome" role="tab" aria-controls="thome" aria-selected="true">Overview</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="tprofile-tab" data-toggle="tab" href="#tprofile" role="tab" aria-controls="tprofile" aria-selected="false">Links</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="thome" role="tabpanel" aria-labelledby="thome-tab">
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="alert alert-success card-overview text-center" role="alert">
+                                    <h4 class="alert-heading"><i class="fas fa-link fa-3x"></i></h4>
+                                    <p>You have <span th:text="${counterLinks}"></span> links!</p>
+                                    <hr>
+                                    <p class="mb-0">
+                                        <a th:href="@{/link/submit}"><button type="button" class="btn btn-success"><i class="fas fa-plus-circle"></i> add a new</button></a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="alert alert-success card-overview text-center" role="alert">
+                                    <h4 class="alert-heading"><i class="far fa-comment fa-3x"></i></h4>
+                                    <p>You wrote <span th:text="${counterComments}"></span> comments!</p>
+                                    <hr>
+                                </div>
+                            </div>
+
                         </div>
+
+                    </div>
+                    <div class="tab-pane fade" id="tprofile" role="tabpanel" aria-labelledby="tprofile-tab">
+
+
+                        <br>
+                        <div th:each="link : ${links}">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <p class="card-title">
+
+                                        <a class="title" th:href="@{'/link/' + ${link.id}}" target="_blank" th:text="${link.titel}"></a>
+                                        <span class="domain">(<a th:href="${link.url}" th:text="${link.getShortUrl()}"></a>)</span>
+                                    </p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <a th:href="@{'/link/' + ${link.id} + '#comments'}" class="comments" th:text="|${link.getComments().size()} comments|"><i class="fas fa-comments"></i>comments</a>
+                                    </li>
+                                </ul>
+                                <div class="card-footer text-muted">
+                                    <time class="live-timestamp" th:text="${link.getPrettyDifference()}"></time>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+
                     </div>
                 </div>
 
+
             </div>
+
             <!-- Right Side -->
-            <div class="col-3 offset-1">
+            <div class="col-lg-3 offset-1">
                 <div class="row">
                     <div class="card col-12">
                         <img class="card-img-top" src="static/images/profile_small.png" alt="Card image cap">
                         <div class="card-body">
                             <p class="card-text">
-                                <a href="/u/place4code">/u/place4code</a>
+                                <a th:href="|@{/user/}${#authentication.getPrincipal().getLogin()}|">
+                                    <i class="far fa-user"></i> <span th:text="${#authentication.getPrincipal().getLogin()}">Account</span>
+                                </a>
                             </p>
-                            <a th:href="@{/link/submit}"><button type="button" class="btn btn-primary btn-lg btn-block">New Post</button></a>
+                            <a th:href="@{/link/submit}"><button type="button" class="btn btn-outline-primary btn-block"><i class="far fa-paper-plane"></i> New Link</button></a>
                         </div>
                     </div>
                 </div>
+                <br>
                 <div class="row">
                     <div class="card col-12">
                         <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
                         <div class="card-body">
                             <h5 class="card-title">Your Information</h5>
                             <p class="card-text">
-                                Posts: 1<br/>
-                                Comments: 34<br/>
-                                User Since: March 23, 2019<br/>
+                                Links: <span th:text="${counterLinks}"></span><br/>
+                                Comments: <span th:text="${counterComments}"></span><br/>
+                                E-mail: <span th:text="${email}"></span><br/>
                             </p>
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="card col-12">
-                        <h5 class="card-title recentLinks">Recent Links Clicked</h5>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><a href="#">What's new in place4code</a></li>
-                            <li class="list-group-item"><a href="#">jump to Java 11</a></li>
-                        </ul>
                     </div>
                 </div>
             </div>

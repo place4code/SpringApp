@@ -4,6 +4,8 @@ import com.place4code.reddit.model.Comment;
 import com.place4code.reddit.repo.CommentRepo;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CommentService {
 
@@ -16,4 +18,10 @@ public class CommentService {
     public void save(Comment comment) {
         commentRepo.save(comment);
     }
+
+    public List<Comment> findAllByCreatedBy(String email) {
+        return commentRepo.findAllByCreatedBy(email);
+    }
+
+
 }
