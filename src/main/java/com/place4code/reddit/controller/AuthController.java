@@ -97,6 +97,7 @@ public class AuthController {
         //find user's comments
         List<Comment> comments = commentService.findAllByCreatedBy(user.getEmail());
 
+        model.addAttribute("comments", comments);
         model.addAttribute("counterComments", comments.size());
         model.addAttribute("counterLinks", links.size());
         model.addAttribute("email", user.getEmail());

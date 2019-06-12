@@ -25,10 +25,13 @@
                     <li class="nav-item">
                         <a class="nav-link" id="tprofile-tab" data-toggle="tab" href="#tprofile" role="tab" aria-controls="tprofile" aria-selected="false">Links</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="tcomments-tab" data-toggle="tab" href="#tcomments" role="tab" aria-controls="tcomments" aria-selected="false">Comments</a>
+                    </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="thome" role="tabpanel" aria-labelledby="thome-tab">
 
+                    <div class="tab-pane fade show active" id="thome" role="tabpanel" aria-labelledby="thome-tab">
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="alert alert-success card-overview text-center" role="alert">
@@ -47,13 +50,10 @@
                                     <hr>
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
+
                     <div class="tab-pane fade" id="tprofile" role="tabpanel" aria-labelledby="tprofile-tab">
-
-
                         <br>
                         <div th:each="link : ${links}">
                             <div class="card text-center">
@@ -75,8 +75,25 @@
                             </div>
                             <br>
                         </div>
-
                     </div>
+
+                    <div class="tab-pane fade" id="tcomments" role="tabpanel" aria-labelledby="tcomments-tab">
+                        <br>
+                        <div th:each="comment : ${comments}">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="card-title">
+                                        You wrote a comment:
+                                        "<span th:text="${comment.getBody()}"></span>"
+                                        in the
+                                        <a class="title" th:href="@{'/link/' + ${comment.getLink().getId()}}" target="_blank">link</a>.
+                                    </p>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+
                 </div>
 
 
