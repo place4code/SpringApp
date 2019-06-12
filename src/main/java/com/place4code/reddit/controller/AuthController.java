@@ -70,4 +70,9 @@ public class AuthController {
         return "redirect:/";
     }
 
+    @GetMapping("/user/{login}")
+    public String showAccount(@PathVariable String login) {
+        return "auth/profile";
+    }
+
 }
