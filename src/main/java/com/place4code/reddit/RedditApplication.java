@@ -1,22 +1,16 @@
 package com.place4code.reddit;
 
 
-import com.place4code.reddit.storage.FileStorage;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 
-import javax.annotation.Resource;
-
 @SpringBootApplication
 @EnableTransactionManagement
-public class RedditApplication implements CommandLineRunner {
+public class RedditApplication{
 
-	@Resource
-	FileStorage fileStorage;
 
 	public static void main(String[] args) {
 		SpringApplication.run(RedditApplication.class, args);
@@ -29,12 +23,6 @@ public class RedditApplication implements CommandLineRunner {
 	@Bean
 	public SpringSecurityDialect securityDialect() {
 		return new SpringSecurityDialect();
-	}
-
-	@Override
-	public void run(String... args) throws Exception {
-		fileStorage.deleteAll();
-		fileStorage.init();
 	}
 
 

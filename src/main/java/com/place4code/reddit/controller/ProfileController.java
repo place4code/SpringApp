@@ -65,7 +65,7 @@ public class ProfileController {
     public String uploadMultipartFile(@RequestParam("uploadfile") MultipartFile file, Model model) {
         try {
             fileStorage.store(file);
-            model.addAttribute("message", "File uploaded successfully! -> filename = " + file.getOriginalFilename());
+            model.addAttribute("message", "File uploaded successfully! -> filename");
         } catch (Exception e) {
             model.addAttribute("message", "Fail! -> uploaded filename: " + file.getOriginalFilename());
         }
