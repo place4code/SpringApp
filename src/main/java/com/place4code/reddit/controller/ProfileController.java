@@ -5,12 +5,16 @@ import com.place4code.reddit.model.Link;
 import com.place4code.reddit.model.User;
 import com.place4code.reddit.repo.CommentRepo;
 import com.place4code.reddit.repo.LinkRepo;
+import com.place4code.reddit.storage.FileStorage;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,10 +23,12 @@ public class ProfileController {
 
     private LinkRepo linkService;
     private CommentRepo commentService;
+    private FileStorage fileStorage;
 
-    public ProfileController(LinkRepo linkService, CommentRepo commentService) {
+    public ProfileController(LinkRepo linkService, CommentRepo commentService, FileStorage fileStorage) {
         this.linkService = linkService;
         this.commentService = commentService;
+        this.fileStorage = fileStorage;
     }
 
     @Secured({"ROLE_USER"})
@@ -51,8 +57,19 @@ public class ProfileController {
 
     @Secured({"ROLE_USER"})
     @GetMapping("/edit/photo")
-    public String editPhoto() {
-        return "auth/profile";
+    public String editPhotoForm() {
+        return "auth/edit_photo";
+    }
+
+    @PostMapping("/edit/photo")
+    public String uploadMultipartFile(@RequestParam("uploadfile") MultipartFile file, Model model) {
+        try {
+            fileStorage.store(file);
+            model.addAttribute("message", "File uploaded successfully! -> filename = " + file.getOriginalFilename());
+        } catch (Exception e) {
+            model.addAttribute("message", "Fail! -> uploaded filename: " + file.getOriginalFilename());
+        }
+        return "auth/edit_photo";
     }
 
 }
