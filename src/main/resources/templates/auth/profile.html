@@ -100,7 +100,7 @@
             </div>
 
             <!-- Right Side -->
-            <div class="col-lg-3 offset-1">
+            <div class="col-xl-3 col-lg-4 offset-xl-1 offset-lg-0">
                 <div class="row">
                     <div class="card col-12">
                         <img class="card-img-top" src="static/images/profile_small.png" alt="Card image cap">
@@ -110,7 +110,19 @@
                                     <i class="far fa-user"></i> <span th:text="${#authentication.getPrincipal().getLogin()}">Account</span>
                                 </a>
                             </p>
-                            <a th:href="@{/link/submit}"><button type="button" class="btn btn-outline-primary btn-block"><i class="far fa-paper-plane"></i> New Link</button></a>
+
+                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                <a th:href="@{/link/submit}" type="button" class="btn btn-outline-secondary"><i class="far fa-paper-plane"></i> New Link</a>
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        options
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <a class="dropdown-item" th:href="@{/edit/photo}">change profile photo <i class="fas fa-camera-retro"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
