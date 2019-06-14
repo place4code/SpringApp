@@ -73,20 +73,24 @@ public class ProfileController implements HandlerExceptionResolver {
 
     @PostMapping("/edit/photo")
     public String uploadMultipartFile(@RequestParam("uploadfile") MultipartFile file, Model model) {
+        //try save picture and redirect to profile
         try {
             fileStorage.store(file);
-            model.addAttribute("message", "File uploaded successfully! -> filename");
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String login = user.getLogin();
+            return "redirect:/user/" + login;
         } catch (Exception e) {
-            model.addAttribute("message", "Fail! -> uploaded filename: " + file.getOriginalFilename());
+            model.addAttribute("message", e.getMessage());
         }
         return "auth/edit_photo";
     }
 
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+        System.out.println("resolveException");
         ModelAndView modelAndView = new ModelAndView("auth/edit_photo");
         if (ex instanceof MaxUploadSizeExceededException) {
-            modelAndView.getModel().put("message", "File size exceeds limit!");
+            modelAndView.getModel().put("message", "FAIL! File size exceeds limit!");
         }
         return modelAndView;
     }

@@ -36,7 +36,7 @@ public class FileStorageImpl implements FileStorage{
         if (file.getContentType().equals("image/jpeg") || file.getContentType().equals("image/jpg")) {
             fileAgreed = true;
         } else {
-            throw new RuntimeException("FAIL!");
+            throw new RuntimeException("FAIL! Only .jpg files, this is NOT a .jpg file");
         }
 
 
@@ -47,11 +47,12 @@ public class FileStorageImpl implements FileStorage{
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             delete(user.getLogin() + ".jpg");
 
+
             try {
                 Files.copy(file.getInputStream(), this.rootLocation.resolve(user.getLogin() + ".jpg"));
                 user.setAvatar(true);
             } catch (Exception e) {
-                throw new RuntimeException("FAIL! -> message = " + e.getMessage());
+                throw new RuntimeException("FAIL! Unknown ERROR try again later");
             }
         }
 
