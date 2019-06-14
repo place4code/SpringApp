@@ -33,8 +33,7 @@ public class FileStorageImpl implements FileStorage{
     public void store(MultipartFile file){
 
 
-        if ((file.getContentType().equals("image/jpeg") || file.getContentType().equals("image/jpg"))
-        && file.getSize() < 1048576) {
+        if (file.getContentType().equals("image/jpeg") || file.getContentType().equals("image/jpg")) {
             fileAgreed = true;
         } else {
             throw new RuntimeException("FAIL!");
