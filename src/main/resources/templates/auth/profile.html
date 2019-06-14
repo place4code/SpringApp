@@ -103,7 +103,7 @@
             <div class="col-xl-3 col-lg-4 offset-xl-1 offset-lg-0">
                 <div class="row">
                     <div class="card col-12">
-                        <img class="card-img-top" src="static/images/profile_small.png" alt="Card image cap">
+                        <img class="card-img-top" th:src="|@{'/filestorage/'+${avatar}}.jpg|" alt="Card image cap">
                         <div class="card-body">
                             <p class="card-text">
                                 <a th:href="|@{/user/}${#authentication.getPrincipal().getLogin()}|">

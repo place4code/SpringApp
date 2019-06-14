@@ -39,6 +39,7 @@ public class UserService {
         // random String for activation account
         user.setActivationCode(String.valueOf(UUID.randomUUID()));
 
+        user.setAvatar(false);
         user.setEnabled(false);
 
         //add the roles

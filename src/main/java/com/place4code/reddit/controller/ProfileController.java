@@ -47,6 +47,11 @@ public class ProfileController {
         //find user's comments
         List<Comment> comments = commentService.findAllByCreatedBy(user.getEmail());
 
+        if (user.isAvatar()) {
+            model.addAttribute("avatar", user.getLogin());
+        } else {
+            model.addAttribute("avatar", "demo");
+        }
         model.addAttribute("comments", comments);
         model.addAttribute("counterComments", comments.size());
         model.addAttribute("counterLinks", links.size());

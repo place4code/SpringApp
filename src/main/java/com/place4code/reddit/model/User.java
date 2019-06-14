@@ -59,13 +59,17 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String login;
 
+    @NotNull
+    private boolean avatar;
+
     private String activationCode;
 
-    public User(String email, String password, boolean enabled, String login) {
+    public User(String email, String password, boolean enabled, String login, boolean avatar) {
         this.email = email;
         this.password = password;
         this.enabled = enabled;
         this.login = login;
+        this.avatar = avatar;
     }
 
     @Override
