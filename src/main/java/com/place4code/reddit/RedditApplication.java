@@ -1,16 +1,21 @@
 package com.place4code.reddit;
 
 
+import com.place4code.reddit.service.StorageProperties;
+import com.place4code.reddit.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 
 @SpringBootApplication
 @EnableTransactionManagement
+@EnableConfigurationProperties(StorageProperties.class)
 public class RedditApplication{
 
 	@Autowired
@@ -29,5 +34,12 @@ public class RedditApplication{
 		return new SpringSecurityDialect();
 	}
 
+	@Bean
+	CommandLineRunner init(StorageService storageService) {
+		return (args) -> {
+			storageService.deleteAll();
+			storageService.init();
+		};
+	}
 
 }
