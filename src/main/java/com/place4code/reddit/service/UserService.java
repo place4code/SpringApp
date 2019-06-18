@@ -77,4 +77,12 @@ public class UserService {
         return userRepo.findByEmailAndActivationCode(email,activationCode);
     }
 
+    public boolean uniqueEmail(String email) {
+        return !userRepo.findByEmail(email).isPresent();
+    }
+
+    public boolean uniqueLogin(String login) {
+        return !userRepo.findByLogin(login).isPresent();
+    }
+
 }

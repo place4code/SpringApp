@@ -14,17 +14,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.HandlerExceptionResolver;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
-public class ProfileController implements HandlerExceptionResolver {
+public class ProfileController {
 
     private LinkRepo linkService;
     private CommentRepo commentService;
@@ -85,13 +80,4 @@ public class ProfileController implements HandlerExceptionResolver {
         return "auth/edit_photo";
     }
 
-    @Override
-    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        System.out.println("resolveException");
-        ModelAndView modelAndView = new ModelAndView("auth/edit_photo");
-        if (ex instanceof MaxUploadSizeExceededException) {
-            modelAndView.getModel().put("message", "FAIL! File size exceeds limit!");
-        }
-        return modelAndView;
-    }
 }

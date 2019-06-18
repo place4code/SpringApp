@@ -5,6 +5,7 @@ import com.place4code.reddit.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +36,14 @@ public class AuthController {
 
     @PostMapping("/register")
     public String registerNewUser(@Valid User user, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+
+        if (!userService.uniqueEmail(user.getEmail())) {
+            bindingResult.addError(new ObjectError("inValid e-mail", "This e-mail already exists, please choose another one."));
+        }
+        if (!userService.uniqueLogin(user.getLogin())) {
+            bindingResult.addError(new ObjectError("inValid login", "This login already exists, please choose another one."));
+        }
+
         if( bindingResult.hasErrors() ) {
             model.addAttribute("user",user);
             model.addAttribute("validationErrors", bindingResult.getAllErrors());

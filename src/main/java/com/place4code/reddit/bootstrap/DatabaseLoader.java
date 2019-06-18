@@ -12,9 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -91,7 +89,7 @@ public class DatabaseLoader implements CommandLineRunner {
         user.setConfirmPassword(secret);
         userRepo.save(user);
         users.put("exampleUser", user);
-
+/*
         User admin = new User("admin@gmail.com",secret,true, "admin", false);
         admin.addRole(adminRole);
         admin.setConfirmPassword(secret);
@@ -100,7 +98,7 @@ public class DatabaseLoader implements CommandLineRunner {
         User master = new User("master@gmail.com",secret,true, "master", false);
         master.addRoles(new HashSet<>(Arrays.asList(userRole,adminRole)));
         master.setConfirmPassword(secret);
-        userRepo.save(master);
+        userRepo.save(master);*/
 
     }
 
