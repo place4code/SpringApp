@@ -6,10 +6,10 @@
 </div>
 
 <div>
-    <form method="POST" enctype="multipart/form-data" action="/x">
+    <form id="fileForm" method="POST" enctype="multipart/form-data" action="/x">
         <table>
-            <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
-            <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
+            <tr><td>File to upload:</td><td><input type="file" name="file" onchange="firstValidation(this)"/></td></tr>
+            <tr><td></td><td><input type="submit" value="Upload" id="fileId" disabled /></td></tr>
         </table>
     </form>
 </div>
@@ -22,6 +22,22 @@
         </li>
     </ul>
 </div>
+
+<script>
+
+
+function firstValidation(file) {
+    var fileSize = file.files[0].size / 1024 / 1024; // in MB
+    if (fileSize < 1 && fileSize > 0) {
+        document.getElementById("fileId").disabled = false;
+    } else {
+        document.getElementById("fileForm").reset();
+        document.getElementById("fileId").disabled = true;
+    }
+}
+
+
+</script>
 
 </body>
 </html>
