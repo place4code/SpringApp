@@ -18,7 +18,6 @@ public class FileStorageImpl implements FileStorage {
 
     Logger log = LoggerFactory.getLogger(this.getClass().getName());
     private final Path rootLocation = Paths.get("filestorage");
-    private boolean fileAgreed = false;
 
     @Override
     public void delete(String fileName) {
@@ -33,6 +32,7 @@ public class FileStorageImpl implements FileStorage {
     public void store(MultipartFile file){
 
 
+        boolean fileAgreed = false;
         if (file.getContentType().equals("image/jpeg") || file.getContentType().equals("image/jpg")) {
             fileAgreed = true;
         } else {

@@ -84,7 +84,7 @@ public class DatabaseLoader implements CommandLineRunner {
         Role adminRole = new Role("ROLE_ADMIN");
         roleRepo.save(adminRole);
 
-        User user = new User("user@gmail.com",secret,true, "exampleUser", false);
+        User user = new User("user@gmail.com",secret,true, "exampleUser", true);
         user.addRole(userRole);
         user.setConfirmPassword(secret);
         userRepo.save(user);

@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
         redirectAttributes.addFlashAttribute("message",
                 "The file must be less than 1MB");
 
-        return "redirect:/x";
+        return "redirect:/edit/photo";
 
     }
 
@@ -23,9 +23,9 @@ public class GlobalExceptionHandler {
     public String storageException(StorageException e, RedirectAttributes redirectAttributes) {
 
         redirectAttributes.addFlashAttribute("message",
-                "The file could not be saved. Try again.");
+                e.getMessage());
 
-        return "redirect:/x";
+        return "redirect:/edit/photo";
 
     }
 

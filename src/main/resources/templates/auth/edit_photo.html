@@ -10,6 +10,22 @@
 <div class="container">
 
 
+    <div th:if="${message}">
+        <h2 th:text="${message}"/>
+    </div>
+
+    <div>
+        <form id="fileForm" method="POST" enctype="multipart/form-data" th:action="@{/edit/photo}">
+            <table>
+                <tr><td>File to upload:</td><td><input type="file" name="file" onchange="firstValidation(this)"/></td></tr>
+                <tr><td></td><td><input type="submit" value="Upload" id="fileId" disabled /></td></tr>
+            </table>
+        </form>
+    </div>
+
+
+
+
     <div class="container h-100">
         <div class="h-100">
             <div class="row h-100 justify-content-center align-items-center">
@@ -32,6 +48,23 @@
 
 </div>
 
+<script>
+
+function firstValidation(fileX) {
+    var file = fileX.files[0];
+    var fileSize = file.size / 1024 / 1024; // in MB
+    var fileType = file.type;
+    if (fileSize < 1 && fileSize > 0 && (fileType == "image/jpeg" || fileType == "IMAGE/JPEG")) {
+        document.getElementById("fileId").disabled = false;
+        console.log("File size: " + fileSize + " MB, type: " + fileType);
+    } else {
+        console.log("File size: " + fileSize + " MB, type: " + fileType);
+        document.getElementById("fileForm").reset();
+        document.getElementById("fileId").disabled = true;
+    }
+}
+
+</script>
 <section th:replace="~{layouts/main_layout :: bootstrap_js}"></section>
 </body>
 </html>

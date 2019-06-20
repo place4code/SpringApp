@@ -51,9 +51,20 @@ public class FileUploadController {
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
 
-        storageService.store(file);
-        redirectAttributes.addFlashAttribute("message",
-                "You successfully uploaded " + file.getOriginalFilename() + "!");
+        if (!file.isEmpty()) {
+            if (file.getContentType().equalsIgnoreCase("image/png") || file.getContentType().equalsIgnoreCase("image/jpeg")) {
+
+                storageService.store(file);
+
+                redirectAttributes.addFlashAttribute("message",
+                        "You successfully uploaded " + file.getOriginalFilename() + "!");
+
+            } else {
+
+                redirectAttributes.addFlashAttribute("message",
+                        "The file must be a picture");
+            }
+        }
 
         return "redirect:/x";
     }

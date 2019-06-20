@@ -2,10 +2,8 @@ package com.place4code.reddit;
 
 
 import com.place4code.reddit.service.StorageProperties;
-import com.place4code.reddit.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -34,12 +32,12 @@ public class RedditApplication{
 		return new SpringSecurityDialect();
 	}
 
-	@Bean
+	/*@Bean
 	CommandLineRunner init(StorageService storageService) {
 		return (args) -> {
 			storageService.deleteAll();
 			storageService.init();
 		};
-	}
+	}*/
 
 }
