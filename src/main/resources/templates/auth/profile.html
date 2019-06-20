@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{layouts/main_layout :: head(title = 'SpringApp - reddit clone')}">
 </head>
 <body>
@@ -9,8 +9,24 @@
 
 <div class="container">
 
+    <div class="container" th:if="${message}">
+        <div class="row">
+            <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${!error}">
+                <span th:text="${message}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${error}">
+                <span th:text="${message}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
 
-    <!-- profile -->
+
     <div id="profile" class="container">
 
         <div class="row">
@@ -27,6 +43,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="tcomments-tab" data-toggle="tab" href="#tcomments" role="tab" aria-controls="tcomments" aria-selected="false">Comments</a>
+                    </li>
+                    <li class="nav-item" th:if="${owner}">
+                        <a class="nav-link" id="tedit-tab" data-toggle="tab" href="#tedit" role="tab" aria-controls="tedit" aria-selected="false">Edit</a>
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
@@ -92,6 +111,10 @@
                             </div>
                             <br>
                         </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="tedit" role="tabpanel" aria-labelledby="tedit-tab" th:if="${owner}">
+
                     </div>
 
                 </div>

@@ -60,6 +60,7 @@ public class User implements UserDetails {
     private String login;
 
     @NotNull
+    @Column(nullable = false)
     private boolean avatar;
 
     private String activationCode;

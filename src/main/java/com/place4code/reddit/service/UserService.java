@@ -85,4 +85,11 @@ public class UserService {
         return !userRepo.findByLogin(login).isPresent();
     }
 
+    public User findByLogin(String login) {
+        return userRepo.findByLogin(login).get();
+    }
+
+    public Optional<User> findByEmail(String email) {
+        return userRepo.findByEmail(email);
+    }
 }

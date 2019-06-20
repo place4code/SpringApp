@@ -48,7 +48,6 @@ public class FileSystemStorageService implements StorageService {
                 User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                 delete(user.getLogin() + ".jpg");
                 Files.copy(file.getInputStream(), this.rootLocation.resolve(user.getLogin() + ".jpg"));
-                user.setAvatar(true);
             } catch (IOException e) {
                 throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
             }
