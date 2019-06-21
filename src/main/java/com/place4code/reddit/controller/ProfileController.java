@@ -7,7 +7,6 @@ import com.place4code.reddit.repo.CommentRepo;
 import com.place4code.reddit.repo.LinkRepo;
 import com.place4code.reddit.service.StorageService;
 import com.place4code.reddit.service.UserService;
-import com.place4code.reddit.storage.FileStorage;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -27,15 +26,13 @@ public class ProfileController {
 
     private LinkRepo linkService;
     private CommentRepo commentService;
-    private FileStorage fileStorage;
     private final StorageService storageService;
     private UserService userService;
 
 
-    public ProfileController(LinkRepo linkService, CommentRepo commentService, FileStorage fileStorage, StorageService storageService, UserService userService) {
+    public ProfileController(LinkRepo linkService, CommentRepo commentService, StorageService storageService, UserService userService) {
         this.linkService = linkService;
         this.commentService = commentService;
-        this.fileStorage = fileStorage;
         this.storageService = storageService;
         this.userService = userService;
     }

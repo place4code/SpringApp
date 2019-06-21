@@ -1,6 +1,8 @@
 package com.place4code.reddit.exceptions;
 
+import com.place4code.reddit.model.User;
 import com.place4code.reddit.storage.StorageException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MultipartException;
@@ -15,7 +17,8 @@ public class GlobalExceptionHandler {
         redirectAttributes.addFlashAttribute("message",
                 "The file must be less than 1MB");
 
-        return "redirect:/edit/photo";
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return "redirect:/user/" + user.getLogin();
 
     }
 
@@ -25,7 +28,8 @@ public class GlobalExceptionHandler {
         redirectAttributes.addFlashAttribute("message",
                 e.getMessage());
 
-        return "redirect:/edit/photo";
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return "redirect:/user/" + user.getLogin();
 
     }
 
