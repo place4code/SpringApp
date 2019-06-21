@@ -55,9 +55,10 @@
                             <div class="col-lg-4">
                                 <div class="alert alert-success card-overview text-center" role="alert">
                                     <h4 class="alert-heading"><i class="fas fa-link fa-3x"></i></h4>
-                                    <p>You have <span th:text="${counterLinks}"></span> links!</p>
+                                    <p th:if="${owner}">You have <span th:text="${counterLinks}"></span> links!</p>
+                                    <p th:if="${!owner}">This user have <span th:text="${counterLinks}"></span> links!</p>
                                     <hr>
-                                    <p class="mb-0">
+                                    <p class="mb-0" th:if="${owner}">
                                         <a th:href="@{/link/submit}"><button type="button" class="btn btn-success"><i class="fas fa-plus-circle"></i> add a new</button></a>
                                     </p>
                                 </div>
@@ -65,7 +66,8 @@
                             <div class="col-lg-4">
                                 <div class="alert alert-success card-overview text-center" role="alert">
                                     <h4 class="alert-heading"><i class="far fa-comment fa-3x"></i></h4>
-                                    <p>You wrote <span th:text="${counterComments}"></span> comments!</p>
+                                    <p th:if="${owner}">You wrote <span th:text="${counterComments}"></span> comments!</p>
+                                    <p th:if="${!owner}">This user wrote <span th:text="${counterComments}"></span> comments!</p>
                                     <hr>
                                 </div>
                             </div>
@@ -115,6 +117,27 @@
 
                     <div class="tab-pane fade" id="tedit" role="tabpanel" aria-labelledby="tedit-tab" th:if="${owner}">
 
+
+                        <br>
+
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <h3><i class="far fa-bell"></i></h3>
+                            Don't forget! The file must be with the extension <strong>.jpg</strong> and its size must be <strong>less than 1MB</strong>.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <h2>Upload:</h2>
+                        <hr>
+                        <div>
+                            <form id="fileForm" method="POST" enctype="multipart/form-data" th:action="@{/edit/photo}">
+                                <table>
+                                    <tr><td></td><td><input type="file" name="file" onchange="firstValidation(this)"/> <input type="submit" value="Upload" id="fileId" class="btn btn-outline-success" disabled /></td></tr>
+                                </table>
+                            </form>
+                        </div>
+
                     </div>
 
                 </div>
@@ -154,11 +177,11 @@
                     <div class="card col-12">
                         <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
                         <div class="card-body">
-                            <h5 class="card-title">Your Information</h5>
+                            <h5 class="card-title">Profile:</h5>
                             <p class="card-text">
                                 Links: <span th:text="${counterLinks}"></span><br/>
                                 Comments: <span th:text="${counterComments}"></span><br/>
-                                E-mail: <span th:text="${email}"></span><br/>
+                                E-mail: <span th:text="${email}" th:if="${owner}"></span><span th:if="${!owner}"><i class="fas fa-lock"></i></span><br/>
                             </p>
                         </div>
                     </div>
@@ -172,6 +195,24 @@
 
 
 </div>
+
+<script th:if="${owner}">
+
+function firstValidation(fileX) {
+    var file = fileX.files[0];
+    var fileSize = file.size / 1024 / 1024; // in MB
+    var fileType = file.type;
+    if (fileSize < 1 && fileSize > 0 && (fileType == "image/jpeg" || fileType == "IMAGE/JPEG")) {
+        document.getElementById("fileId").disabled = false;
+        console.log("File size: " + fileSize + " MB, type: " + fileType);
+    } else {
+        console.log("File size: " + fileSize + " MB, type: " + fileType);
+        document.getElementById("fileForm").reset();
+        document.getElementById("fileId").disabled = true;
+    }
+}
+
+</script>
 
 <section th:replace="~{layouts/main_layout :: bootstrap_js}"></section>
 </body>
