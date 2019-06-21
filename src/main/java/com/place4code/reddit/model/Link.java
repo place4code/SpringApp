@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.URL;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,12 @@ public class Link extends Auditable {
     @NotNull
     @NotEmpty(message = "Please enter a title")
     private String titel;
+
+    @NotNull
+    @NotEmpty(message = "Please enter a description")
+    @Column(columnDefinition="VARCHAR(1200)")
+    @Size(min = 8, max = 1000)
+    private String desc;
 
     @NotNull
     @NotEmpty(message = "Please enter a URL")

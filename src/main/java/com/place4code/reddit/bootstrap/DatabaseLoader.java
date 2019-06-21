@@ -53,6 +53,12 @@ public class DatabaseLoader implements CommandLineRunner {
 
         links.forEach((k,v) -> {
             Link link = new Link(k, v);
+            link.setDesc("Lorem Ipsum is simply dummy text of the printing and typesetting industry. " +
+                    "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, " +
+                    "when an unknown printer took a galley of type and scrambled it to make a type specimen book. " +
+                    "It has survived not only five centuries, but also the leap into electronic typesetting, " +
+                    "remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, " +
+                    "and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.");
             link.setUser(users.get("exampleUser"));
             linkRepo.save(link);
             // add comments to the link:
@@ -61,7 +67,7 @@ public class DatabaseLoader implements CommandLineRunner {
             Comment pwa = new Comment("What is this Progressive Web App thing all about? PWAs sound really cool.",link);
 
             Stream.of(spring, security, pwa).forEach(c -> {
-                c.setLogin("bootstrap");
+                c.setLogin("exampleUser");
                 commentRepo.save(c);
                 link.addComment(c);
             });

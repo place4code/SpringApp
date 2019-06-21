@@ -24,6 +24,13 @@
                                 th:field="*{titel}">
                         <small th:errors="*{titel}" style="color:red;"></small>
                     </div>
+
+                    <div class="form-group">
+                        <label for="desc">Description</label>
+                        <input type="text" class="form-control" id="desc" placeholder="description" required="required" th:field="*{desc}">
+                        <small th:errors="*{desc}" style="color:red;"></small>
+                    </div>
+
                     <div class="form-group">
                         <label for="url">URL</label>
                         <input type="url" class="form-control" id="url" placeholder="URL" required="required" th:field="*{url}">
