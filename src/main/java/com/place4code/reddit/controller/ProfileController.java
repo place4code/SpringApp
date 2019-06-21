@@ -69,6 +69,7 @@ public class ProfileController {
         model.addAttribute("counterComments", comments.size());
         model.addAttribute("counterLinks", links.size());
         model.addAttribute("email", profileOwner.getEmail());
+        model.addAttribute("profileOwner", profileOwner);
 
         return "auth/profile";
     }

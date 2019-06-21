@@ -17,12 +17,23 @@
             <div class="col-md-6">
                 <h2>Please Login</h2>
                 <hr>
-                <div class="alert alert-danger" th:if="${param.error != null}">
-                    Invalid username and password.
-                </div>
-                <div class="alert alert-success" th:if="${param.logout != null}">
-                    You have been logged out.
-                </div>
+
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.error != null}">
+                        <h3><i class="far fa-frown"></i></h3>
+                        Invalid username and/or password.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${param.logout != null}">
+                        <h3><i class="far fa-smile-wink"></i></h3>
+                        You have been logged out.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
             </div>
             <div class="col-md-3"></div>
         </div>
@@ -56,10 +67,12 @@
             <div class="col-md-3"></div>
             <div class="col-md-6" style="padding-top: .35rem">
                 <div class="form-check mb-2 mr-sm-2 mb-sm-0">
-                    <label class="form-check-label">
-                        <input id="remember-me" name="remember-me" class="form-check-input" type="checkbox" >
-                        <span style="padding-bottom: .15rem">Remember me</span>
-                    </label>
+
+                    <div class="custom-control custom-checkbox">
+                        <input id="remember-me" name="remember-me" type="checkbox" class="custom-control-input">
+                        <label class="custom-control-label" for="remember-me">Remember me</label>
+                    </div>
+
                 </div>
             </div>
             <div class="col-md-3"></div>
