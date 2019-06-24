@@ -1,8 +1,11 @@
 package com.place4code.reddit.service;
 
-import com.place4code.reddit.model.Like;
+import com.place4code.reddit.model.Likes;
+import com.place4code.reddit.model.Link;
 import com.place4code.reddit.repo.LikeRepo;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class LikeService {
@@ -13,7 +16,19 @@ public class LikeService {
         this.likeRepo = likeRepo;
     }
 
-    public void save(Like like) {
+    public void save(Likes like) {
         likeRepo.save(like);
+    }
+
+    public Optional<Likes> findByUserId(Long id) {
+        return likeRepo.findByUserId(id);
+    }
+
+    public Optional<Likes> findFirstByUserId(Long id) {
+        return likeRepo.findFirstByUserId(id);
+    }
+
+    public Optional<Likes> findFirstByLinkAndUserId(Link link, Long id) {
+        return likeRepo.findFirstByLinkAndUserId(link, id);
     }
 }

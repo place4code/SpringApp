@@ -19,60 +19,66 @@
 
 
         <div class="card">
-            <ul class="list-group list-group-flush text-center">
-                <li class="list-group-item">
-                    <div>
-                        <a href="#" class="upvote" th:data-id="${link.id}"><i class="fas fa-arrow-up"></i></a>
-                        <span th:id="|votesCounter-${link.id}|" class="votesCounter" th:text="${link.getVotesCounter()}">0</span>
-                        <a href="#" class="downvote" th:data-id="${link.id}" th:disabled="true"><i class="fas fa-arrow-down"></i></a>
-                    </div>
-                    <span th:text="${link.titel}">Title</span> <span class="domain">(<a th:href="${link.url}" th:text="${link.getShortUrl()}"></a>)</span>
-                </li>
-            </ul>
-            <div class="card-header text-center">
-                <time class="live-timestamp" th:text="${link.getPrettyDifference()}"></time> by
-                <a th:href="@{'/user/' + ${link.getUser().getLogin()}}" class="author" th:text="${link.getUser().getLogin()}"></a>
-            </div>
-            <div class="card-body text-center">
-                <p class="card-title">
-                    <a th:href="${link.url}" class="permalink"><i class="fas fa-globe-europe"></i> <span th:text="${link.url}"></span></a>
-                </p>
-            </div>
-            <div class="card-body">
-                <p th:text="${link.desc}">
-                </p>
-            </div>
+
+             <div class="card-body">
+                    <div class="text-center">
+                    <a href="#" class="upvote" th:data-id="${link.id}" style="color: green"><i class="fas fa-arrow-up"></i></a>&nbsp;&nbsp;
+                    <span th:id="|votesCounter-${link.id}|" class="votesCounter" th:text="${link.getVotesCounter()}">0</span>&nbsp;&nbsp;
+                    <a href="#" class="downvote" th:data-id="${link.id}" th:disabled="true" style="color: red"><i class="fas fa-arrow-down"></i></a>
+             </div>
+
+             <p class="text-black-50">Posted by
+                 <a th:href="@{'/user/' + ${link.getUser().getLogin()}}" class="author text-muted" th:text="${link.getUser().getLogin()}"></a>
+                 <time class="live-timestamp" th:text="${link.getPrettyDifference()}"></time>
+             </p>
+             <p>
+                 <span th:text="${link.titel}" class="h4">Title</span>
+                 <span class="domain">(<a th:href="${link.url}" th:text="${link.getShortUrl()}"></a>)</span>
+             </p>
+             <p th:text="${link.desc}"></p>
+             <p>
+                 <a th:href="${link.url}" class="btn btn-light btn-sm"><i class="fas fa-globe-europe"></i> <span th:text="|${link.getShortUrl()}...|"></span></a>
+                 <a th:if="${canLike == true}" th:data-id="${link.id}" href="#" class="btn btn-outline-primary btn-sm" id="likeBtn"><i class="far fa-thumbs-up"></i> like</a>
+             </p>
+
+             <hr>
+                 <div class="text-black-50">
+
+                     <span th:text="${link.getComments().size()}"></span> <i class="far fa-comments"></i> |
+                     <span th:text="${link.getLikesCounter()}" th:data-likes="${link.getLikesCounter()}" id="likesCount"></span> <i class="far fa-thumbs-up"></i>
+
+                 </div>
+
+
+        </div>
+
+
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
 
                     <!-- link comments -->
                     <div id="comments" class="comments">
-                        <div class="row header">
-                            <div class="col-1">&nbsp;</div>
-                            <div class="col-11" th:text="|all  ${link.getComments().size()} comments:|"></div>
-                        </div>
-
                         <!-- single comment -->
                         <div class="row comment" th:each="comment : ${link.getComments()}">
-                            <div class="col-1">&nbsp;</div>
-                            <div class="col-11">
-                                <span><a th:href="@{'/user/' + ${comment.getLogin()}}"><i class='far fa-user'></i> <span th:text="${comment.getLogin()}"></span></a></span>
-                                <span><i class="far fa-clock"></i> <span th:text="${comment.getPrettyDifference()}"></span></span>
-                                <p class="body" th:text="${comment.getBody()}"></p>
-                                <a href="#" class="permalink"><i class="fas fa-link"></i> permalink</a>
-                                <a href="#" class="like"><i class="far fa-thumbs-up"></i> Like</a>
+                            <div class="col">
+
+                                <p class="text-black-50">
+                                    <a th:href="@{'/user/' + ${comment.getLogin()}}" class="author text-muted" th:text="${comment.getLogin()}"></a>
+                                    &nbsp;&nbsp;<i class="fas fa-history fa-sm"></i>&nbsp;
+                                    <time class="live-timestamp" th:text="${link.getPrettyDifference()}"></time><br>
+                                    <span th:text="${comment.getBody()}"></span>
+                                </p>
                             </div>
                         </div>
                         <hr class="my-4">
                         <div class="row addcomment" sec:authorize="hasRole('ROLE_USER')">
-                            <div class="col-1">&nbsp;</div>
-                            <div class="col-11">
+                            <div class="col">
                                 <form id="formAddComment" method="POST" th:action="@{/link/comments}" th:object="${comment}">
                                     <input type="hidden" th:field="*{link}"/>
                                     <div class="form-group">
                                         <textarea class="form-control" id="comment" rows="3" th:field="*{body}"></textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-outline-success">Add Comment</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-success">Add Comment</button>
                                 </form>
                             </div>
                         </div>
@@ -107,6 +113,27 @@
                 .catch(err => console.error(err));
         });
     }
+
+    const like = document.querySelector("#likeBtn");
+
+    const link_id = like.getAttribute("data-id");
+    const likesCount = document.querySelector('#likesCount');
+    var likesCounter = parseInt(likesCount.getAttribute("data-likes"));
+
+    like.addEventListener('click',
+    function(event) {
+            fetch(`http://localhost:8090/link/${link_id}/likesCounter/${likesCounter}`)
+            .then(response => response.json())
+            .then(data => likesCount.innerHTML = data)
+            .then(likesCounter = likesCounter + 1)
+            .then(like.remove())
+            .catch(err => console.log(err));
+        }
+    );
+
+
+
+
 </script>
 <section th:replace="~{layouts/main_layout :: bootstrap_js}"></section>
 </body>

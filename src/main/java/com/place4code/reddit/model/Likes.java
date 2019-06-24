@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Data
 @NoArgsConstructor
-public class Like {
+public class Likes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,8 +19,12 @@ public class Like {
     @ManyToOne
     private Link link;
 
-    public Like(@NotNull Link link) {
+    @NotNull
+    private Long userId;
+
+    public Likes(@NotNull Link link, @NotNull Long userId) {
         this.link = link;
+        this.userId = userId;
     }
 
 }

@@ -43,7 +43,7 @@ public class Link extends Auditable {
     private int votesCounter = 0;
 
     @OneToMany(mappedBy = "link")
-    private List<Like> likes = new ArrayList<>();
+    private List<Likes> likes = new ArrayList<>();
     private int likesCounter = 0;
 
     @ManyToOne
@@ -69,4 +69,5 @@ public class Link extends Auditable {
     public String getShortUrl() {
         return MyURL.makeShortUrl(url);
     }
+
 }

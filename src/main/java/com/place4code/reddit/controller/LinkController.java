@@ -1,9 +1,11 @@
 package com.place4code.reddit.controller;
 
 import com.place4code.reddit.model.Comment;
+import com.place4code.reddit.model.Likes;
 import com.place4code.reddit.model.Link;
 import com.place4code.reddit.model.User;
 import com.place4code.reddit.service.CommentService;
+import com.place4code.reddit.service.LikeService;
 import com.place4code.reddit.service.LinkService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,10 +26,12 @@ public class LinkController {
 
     private LinkService linkService;
     private CommentService commentService;
+    private LikeService likeService;
 
-    public LinkController(LinkService linkService, CommentService commentService) {
+    public LinkController(LinkService linkService, CommentService commentService, LikeService likeService) {
         this.linkService = linkService;
         this.commentService = commentService;
+        this.likeService = likeService;
     }
 
     // show all links
@@ -40,12 +44,30 @@ public class LinkController {
     // view a one Link or redirect to the list
     @GetMapping("/link/{id}")
     public String getLink(@PathVariable Long id, Model model) {
+
+
         Optional<Link> tempLink = linkService.findById(id);
         if (tempLink.isPresent()) {
+
 
             Link link = tempLink.get();
             Comment comment = new Comment();
             comment.setLink(link);
+
+            //############################################
+            //likes
+            User tempUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+            //find like of this user
+            Optional<Likes> like = likeService.findFirstByLinkAndUserId(link, tempUser.getId());
+            // this user has already liked the post
+            if (like.isPresent()) {
+                //so he can't again like it
+                model.addAttribute("canLike", false);
+            } else {
+                // or user hasn't liked, so can like
+                model.addAttribute("canLike", true);
+            }
 
             model.addAttribute("comment", comment);
             model.addAttribute("link", link);
