@@ -37,9 +37,18 @@
              </p>
              <p th:text="${link.desc}"></p>
              <p>
+
+
                  <a th:href="${link.url}" class="btn btn-light btn-sm"><i class="fas fa-globe-europe"></i> <span th:text="|${link.getShortUrl()}...|"></span></a>
-                 <a th:data-canLike="${canLike}" th:data-id="${link.id}" href="#" class="btn btn-outline-primary btn-sm" id="likeBtn"><i class="far fa-thumbs-up"></i> like</a>
-                 <a th:data-canLike="${canLike}"  th:data-id="${link.id}" href="#" class="btn btn-outline-primary btn-sm" id="unlikeBtn"><i class="far fa-thumbs-down"></i> unlike</a>
+                 <hr>
+                 <a href="#" class="text-secondary" style="text-decoration: none;"><i class="far fa-heart"></i> add to favourite</a>
+                 <span class="text-danger"><i class="fas fa-heart"></i> favourite</span>
+                 &nbsp;
+                 <a th:data-canLike="${canLike}" th:data-id="${link.id}" href="#" class="text-secondary" id="likeBtn" style="text-decoration: none;"><i class="far fa-thumbs-up"></i> like</a>
+                 <a th:data-canLike="${canLike}" th:data-id="${link.id}" href="#" class="text-primary" id="unlikeBtn" style="text-decoration: none;"><i class="far fa-thumbs-up"></i> I like it</a>
+                 &nbsp;
+
+
              </p>
 
              <hr>
@@ -76,10 +85,16 @@
                             <div class="col">
                                 <form id="formAddComment" method="POST" th:action="@{/link/comments}" th:object="${comment}">
                                     <input type="hidden" th:field="*{link}"/>
+                                    <div class="alert alert-light" role="alert" id="commentInfo">
+                                        <i class="fas fa-info"></i> &nbsp;&nbsp;&nbsp; The maximum length of the comment is 512 characters.
+                                    </div>
                                     <div class="form-group">
-                                        <textarea minlength="1" maxlength="512" class="form-control" id="comment" rows="3" th:field="*{body}"></textarea>
+                                        <textarea minlength="1" class="form-control" id="comment" rows="5" th:field="*{body}"></textarea>
                                     </div>
                                     <button type="submit" class="btn btn-sm btn-outline-success" id="submitComment" disabled>Add Comment</button>
+                                    <hr>
+                                    <span id="charRemaining"></span>
+
                                 </form>
                             </div>
                         </div>
@@ -169,18 +184,19 @@
     }
 
 
-
+    let charRemaining = document.getElementById("charRemaining");
 
     document.getElementById('comment').onkeyup = function() {
         var commentLength = this.value.length;
-        if(commentLength >= 1 && commentLength < 512) {
+        if(commentLength >= 1 && commentLength <= 512) {
+            charRemaining.innerHTML = "<i class='far fa-check-circle text-success'></i> You have " + (512 - commentLength) + " remaining.";
             document.getElementById("submitComment").disabled = false;
         } else {
+            charRemaining.innerHTML = '<i class="far fa-bell text-danger"></i> You have ' + (commentLength - 512) + ' too much.';
             document.getElementById("submitComment").disabled = true;
         }
 
     }
-
 
 
 
