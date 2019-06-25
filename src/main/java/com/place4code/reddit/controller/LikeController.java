@@ -35,17 +35,60 @@ public class LikeController {
         if (tempLink.isPresent()) {
 
             Link link = tempLink.get();
-            Likes like = new Likes(link, tempUser.getId());
-            likeService.save(like);
 
-            //update counter
-            link.setLikesCounter(likesCounter + 1);
-            linkService.save(link);
+            // security during adding the new like (There is already in javascript, but here for sure)
+            // find like of currently logged user
+            Optional<Likes> tempLike = likeService.findFirstByLinkAndUserId(link, tempUser.getId());
+            //like this user doesn't exist, so permit like the post
+            if (!tempLike.isPresent()) {
+                Likes like = new Likes(link, tempUser.getId());
+                likeService.save(like);
 
-            return likesCounter + 1;
+                //update counter
+                link.setLikesCounter(likesCounter + 1);
+                linkService.save(link);
+
+                return likesCounter + 1;
+            }
         }
 
         return likesCounter;
 
     }
+
+
+    @Secured({"ROLE_USER"})
+    @GetMapping("/link/{id}/likesCounter/{likesCounter}/unlike")
+    public int unlike(@PathVariable Long id, @PathVariable int likesCounter) {
+
+        User tempUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<Link> tempLink = linkService.findById(id);
+
+        if (tempLink.isPresent()) {
+
+            Link link = tempLink.get();
+
+            // security during deleting the like (There is already in javascript, but here for sure)
+            // find like of currently logged user
+            Optional<Likes> tempLike = likeService.findFirstByLinkAndUserId(link, tempUser.getId());
+            //like this user doesn't exist, so permit like the post
+            if (tempLike.isPresent()) {
+
+                // delete like
+                likeService.delete(tempLike.get());
+
+                //update counter
+                link.setLikesCounter(likesCounter - 1);
+                linkService.save(link);
+
+                return likesCounter - 1;
+            }
+        }
+
+        return likesCounter;
+
+    }
+
+
 }

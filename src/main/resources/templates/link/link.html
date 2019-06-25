@@ -38,7 +38,8 @@
              <p th:text="${link.desc}"></p>
              <p>
                  <a th:href="${link.url}" class="btn btn-light btn-sm"><i class="fas fa-globe-europe"></i> <span th:text="|${link.getShortUrl()}...|"></span></a>
-                 <a th:if="${canLike == true}" th:data-id="${link.id}" href="#" class="btn btn-outline-primary btn-sm" id="likeBtn"><i class="far fa-thumbs-up"></i> like</a>
+                 <a th:data-canLike="${canLike}" th:data-id="${link.id}" href="#" class="btn btn-outline-primary btn-sm" id="likeBtn"><i class="far fa-thumbs-up"></i> like</a>
+                 <a th:data-canLike="${canLike}"  th:data-id="${link.id}" href="#" class="btn btn-outline-primary btn-sm" id="unlikeBtn"><i class="far fa-thumbs-down"></i> unlike</a>
              </p>
 
              <hr>
@@ -76,9 +77,9 @@
                                 <form id="formAddComment" method="POST" th:action="@{/link/comments}" th:object="${comment}">
                                     <input type="hidden" th:field="*{link}"/>
                                     <div class="form-group">
-                                        <textarea class="form-control" id="comment" rows="3" th:field="*{body}"></textarea>
+                                        <textarea minlength="1" maxlength="512" class="form-control" id="comment" rows="3" th:field="*{body}"></textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-sm btn-outline-success">Add Comment</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-success" id="submitComment" disabled>Add Comment</button>
                                 </form>
                             </div>
                         </div>
@@ -98,6 +99,59 @@
 
 
 <script sec:authorize="isFullyAuthenticated()">
+
+
+    var like_button = document.getElementById("likeBtn");
+    like_button.style.display = "none";
+    var unlike_button = document.getElementById("unlikeBtn");
+    unlike_button.style.display = "none";
+
+    var link_id = parseInt(like_button.getAttribute("data-id"));
+    var likesCount = document.getElementById("likesCount");
+    var likes = parseInt(likesCount.getAttribute("data-likes"));
+
+
+    if(like_button.getAttribute("data-canLike") == "true") {
+        like_button.style.display = "inline";
+        unlike_button.style.display = "none";
+    }
+
+    if(unlike_button.getAttribute("data-canLike") == "false") {
+        unlike_button.style.display = "inline";
+        like_button.style.display = "none";
+    }
+
+    like_button.addEventListener('click',
+    function(event) {
+
+        fetch(`http://localhost:8090/link/${link_id}/likesCounter/${likes}`)
+            .then(response => response.json())
+            .then(data => likesCount.innerHTML = data)
+            .then(likes = likes + 1)
+            .then(unlike_button.style.display = "inline")
+            .then(like_button.style.display = "none")
+            .catch(err => console.log(err));
+
+        }
+    );
+
+
+    unlike_button.addEventListener('click',
+    function(event) {
+
+            fetch(`http://localhost:8090/link/${link_id}/likesCounter/${likes}/unlike`)
+            .then(response => response.json())
+            .then(data => likesCount.innerHTML = data)
+            .then(likes = likes - 1)
+            .then(like_button.style.display = "inline")
+            .then(unlike_button.style.display = "none")
+            .catch(err => console.log(err));
+
+        }
+    );
+
+
+
     const allvotes = document.querySelectorAll(".upvote, .downvote");
     for(let i=0; i<allvotes.length; i++) {
         let className = allvotes[i].className;
@@ -114,22 +168,18 @@
         });
     }
 
-    const like = document.querySelector("#likeBtn");
 
-    const link_id = like.getAttribute("data-id");
-    const likesCount = document.querySelector('#likesCount');
-    var likesCounter = parseInt(likesCount.getAttribute("data-likes"));
 
-    like.addEventListener('click',
-    function(event) {
-            fetch(`http://localhost:8090/link/${link_id}/likesCounter/${likesCounter}`)
-            .then(response => response.json())
-            .then(data => likesCount.innerHTML = data)
-            .then(likesCounter = likesCounter + 1)
-            .then(like.remove())
-            .catch(err => console.log(err));
+
+    document.getElementById('comment').onkeyup = function() {
+        var commentLength = this.value.length;
+        if(commentLength >= 1 && commentLength < 512) {
+            document.getElementById("submitComment").disabled = false;
+        } else {
+            document.getElementById("submitComment").disabled = true;
         }
-    );
+
+    }
 
 
 

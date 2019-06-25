@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Getter @Setter
@@ -18,6 +19,8 @@ public class Comment extends Auditable {
     private Long id;
 
     @NotNull
+    @Column(columnDefinition="VARCHAR(512)")
+    @Size(min = 1, max = 512)
     private String body;
 
     @ManyToOne

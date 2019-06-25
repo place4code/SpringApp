@@ -12,4 +12,6 @@ public interface LikeRepo extends JpaRepository<Likes,Long> {
     Optional<Likes> findFirstByUserId(Long id);
 
     Optional<Likes> findFirstByLinkAndUserId(Link link, Long id);
+
+    void delete(Likes like);
 }

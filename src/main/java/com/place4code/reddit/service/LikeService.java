@@ -31,4 +31,8 @@ public class LikeService {
     public Optional<Likes> findFirstByLinkAndUserId(Link link, Long id) {
         return likeRepo.findFirstByLinkAndUserId(link, id);
     }
+
+    public void delete(Likes like) {
+        likeRepo.delete(like);
+    }
 }
