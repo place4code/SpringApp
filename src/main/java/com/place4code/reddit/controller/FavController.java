@@ -26,7 +26,7 @@ public class FavController {
 
     @Secured({"ROLE_USER"})
     @GetMapping("/link/{id}/favourite")
-    public void favourite(@PathVariable Long id) {
+    public int favourite(@PathVariable Long id) {
 
         //who's logged
         User tempUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -48,15 +48,16 @@ public class FavController {
                 //save favourite
                 Fav fav = new Fav(link, tempUser.getId());
                 favService.save(fav);
+                return 1;
             } else {
                 //was founded already, so delete it
                 Fav fav = tempFavourite.get();
                 favService.delete(fav);
+                return 0;
             }
         }
 
-
-
+        return 0;
 
     }
 }

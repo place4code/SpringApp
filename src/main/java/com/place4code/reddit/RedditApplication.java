@@ -32,6 +32,8 @@ public class RedditApplication{
 		return new SpringSecurityDialect();
 	}
 
+
+
 	/*@Bean
 	CommandLineRunner init(StorageService storageService) {
 		return (args) -> {

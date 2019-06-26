@@ -1,10 +1,8 @@
 package com.place4code.reddit.controller;
 
-import com.place4code.reddit.model.Comment;
-import com.place4code.reddit.model.Likes;
-import com.place4code.reddit.model.Link;
-import com.place4code.reddit.model.User;
+import com.place4code.reddit.model.*;
 import com.place4code.reddit.service.CommentService;
+import com.place4code.reddit.service.FavService;
 import com.place4code.reddit.service.LikeService;
 import com.place4code.reddit.service.LinkService;
 import org.springframework.security.access.annotation.Secured;
@@ -27,11 +25,13 @@ public class LinkController {
     private LinkService linkService;
     private CommentService commentService;
     private LikeService likeService;
+    private FavService favService;
 
-    public LinkController(LinkService linkService, CommentService commentService, LikeService likeService) {
+    public LinkController(LinkService linkService, CommentService commentService, LikeService likeService, FavService favService) {
         this.linkService = linkService;
         this.commentService = commentService;
         this.likeService = likeService;
+        this.favService = favService;
     }
 
     // show all links
@@ -47,6 +47,7 @@ public class LinkController {
 
 
         Optional<Link> tempLink = linkService.findById(id);
+
         if (tempLink.isPresent()) {
 
 
@@ -55,11 +56,13 @@ public class LinkController {
             comment.setLink(link);
 
             //############################################
-            //likes
+            //likes and favourite
             User tempUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
             //find like of this user
             Optional<Likes> like = likeService.findFirstByLinkAndUserId(link, tempUser.getId());
+            //find favourite
+            Optional<Fav> fav = favService.findByLinkAndUserId(link, tempUser.getId());
             // this user has already liked the post
             if (like.isPresent()) {
                 //so he can't again like it
@@ -69,9 +72,16 @@ public class LinkController {
                 model.addAttribute("canLike", true);
             }
 
+            if (fav.isPresent()) {
+                model.addAttribute("isFavourite", true);
+            } else {
+                model.addAttribute("isFavourite", false);
+            }
+
             model.addAttribute("comment", comment);
             model.addAttribute("link", link);
             model.addAttribute("success", model.containsAttribute("success"));
+
 
             return "link/link";
         } else {

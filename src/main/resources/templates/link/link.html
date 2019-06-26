@@ -18,7 +18,7 @@
     <!-- links -->
 
 
-        <div class="card">
+        <div class="card" id="linkInfo" th:data-linkId="${link.id}">
 
              <div class="card-body">
                     <div class="text-center">
@@ -41,8 +41,13 @@
 
                  <a th:href="${link.url}" class="btn btn-light btn-sm"><i class="fas fa-globe-europe"></i> <span th:text="|${link.getShortUrl()}...|"></span></a>
                  <hr>
-                 <a th:href="@{'/link/' + ${link.getId()} + '/favourite'}" class="text-secondary" style="text-decoration: none;"><i class="far fa-heart"></i> add to favourite</a>
-                 <span class="text-danger"><i class="fas fa-heart"></i> favourite</span>
+                 <a href="#" style="text-decoration: none;" th:data-isFavourite="${isFavourite}" id="favBtn">
+                     <span class='text-secondary'><i class='far fa-heart'></i> add to favourite</span>
+                 </a>
+
+
+
+
                  &nbsp;
                  <a th:data-canLike="${canLike}" th:data-id="${link.id}" href="#" class="text-secondary" id="likeBtn" style="text-decoration: none;"><i class="far fa-thumbs-up"></i> like</a>
                  <a th:data-canLike="${canLike}" th:data-id="${link.id}" href="#" class="text-primary" id="unlikeBtn" style="text-decoration: none;"><i class="far fa-thumbs-up"></i> I like it</a>
@@ -115,16 +120,50 @@
 
 <script sec:authorize="isFullyAuthenticated()">
 
+    function changeFavourite(data) {
+        if (data == 1) {
+            favBtn.innerHTML = "<span class='text-danger'><i class='fas fa-heart'></i> favourite</span>";
+        } else {
+            favBtn.innerHTML = "<span class='text-secondary'><i class='far fa-heart'></i> add to favourite</span>";
+        }
+    }
+
+
+
+    let linkInfo = document.getElementById("linkInfo");
+    let linkId = parseInt(linkInfo.getAttribute("data-linkId"));
+
+    let favBtn = document.getElementById("favBtn");
+    let isFavourite = favBtn.getAttribute("data-isFavourite");
+
+    if (isFavourite == "true") {
+        favBtn.innerHTML = "<span class='text-danger'><i class='fas fa-heart'></i> favourite</span>";
+    } else {
+        favBtn.innerHTML = "<span class='text-secondary'><i class='far fa-heart'></i> add to favourite</span>";
+    }
+
+    favBtn.addEventListener('click',
+        function(event) {
+
+        fetch(`http://localhost:8090/link/${linkId}/favourite`)
+            .then(response => response.json())
+            .then(data => changeFavourite(data))
+            .catch(err => console.log(err));
+        }
+    );
+
+
+
 
     var like_button = document.getElementById("likeBtn");
     like_button.style.display = "none";
     var unlike_button = document.getElementById("unlikeBtn");
     unlike_button.style.display = "none";
 
-    var link_id = parseInt(like_button.getAttribute("data-id"));
+
     var likesCount = document.getElementById("likesCount");
     var likes = parseInt(likesCount.getAttribute("data-likes"));
-
+    var link_id = parseInt(like_button.getAttribute("data-id"));
 
     if(like_button.getAttribute("data-canLike") == "true") {
         like_button.style.display = "inline";
