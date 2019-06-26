@@ -1,15 +1,13 @@
 package com.place4code.reddit.controller;
 
 import com.place4code.reddit.model.*;
-import com.place4code.reddit.service.CommentService;
-import com.place4code.reddit.service.FavService;
-import com.place4code.reddit.service.LikeService;
-import com.place4code.reddit.service.LinkService;
+import com.place4code.reddit.service.*;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,12 +24,14 @@ public class LinkController {
     private CommentService commentService;
     private LikeService likeService;
     private FavService favService;
+    private UserService userService;
 
-    public LinkController(LinkService linkService, CommentService commentService, LikeService likeService, FavService favService) {
+    public LinkController(LinkService linkService, CommentService commentService, LikeService likeService, FavService favService, UserService userService) {
         this.linkService = linkService;
         this.commentService = commentService;
         this.likeService = likeService;
         this.favService = favService;
+        this.userService = userService;
     }
 
     // show all links
@@ -87,6 +87,33 @@ public class LinkController {
         } else {
             return "redirect:/";
         }
+    }
+
+    @Secured({"ROLE_USER"})
+    @DeleteMapping("/link/{id}")
+    public String deleteLink(@PathVariable Long id) {
+        System.out.println("delete mapping ");
+
+        User user1 = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<User> tempUser = Optional.ofNullable(userService.findByLogin(user1.getLogin()));
+        Optional<Link> tempLink = linkService.findById(id);
+
+        if (tempLink.isPresent() && tempUser.isPresent()) {
+            Link link = tempLink.get();
+            User user = tempUser.get();
+
+            //this is a link of currently logged user?
+            if (link.getUser().equals(user)) {
+                linkService.delete(link);
+                System.out.println("link deleted");
+            }
+
+        }
+
+
+
+        return "redirect:/";
     }
 
     // form view to create a new Link

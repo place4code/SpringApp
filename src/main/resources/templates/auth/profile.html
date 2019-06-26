@@ -76,22 +76,28 @@
 
                     <div class="tab-pane fade" id="tprofile" role="tabpanel" aria-labelledby="tprofile-tab">
                         <br>
+
+
                         <div th:each="link : ${links}">
                             <div class="card text-center">
                                 <div class="card-body">
                                     <p class="card-title">
 
-                                        <a class="title" th:href="@{'/link/' + ${link.id}}" target="_blank" th:text="${link.titel}"></a>
+                                        <a class="title" th:href="@{'/link/' + ${link.id}}" target="" th:text="${link.titel}"></a>
                                         <span class="domain">(<a th:href="${link.url}" th:text="${link.getShortUrl()}"></a>)</span>
                                     </p>
                                 </div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">
-                                        <a th:href="@{'/link/' + ${link.id} + '#comments'}" class="comments" th:text="|${link.getComments().size()} comments|"><i class="fas fa-comments"></i>comments</a>
-                                    </li>
-                                </ul>
                                 <div class="card-footer text-muted">
+                                    <span th:text="${link.getComments().size()}"></span> <i class="far fa-comments"></i>
+                                    &nbsp;
                                     <time class="live-timestamp" th:text="${link.getPrettyDifference()}"></time>
+                                    &nbsp;|&nbsp;
+                                    <form th:method="DELETE" th:action="@{'/link/' + ${link.id}}" action="#">
+                                        <input type="hidden" name="_method" value="delete" />
+                                            <input type="submit" value="DELETE" class="text-danger" style="text-decoration:none" />
+
+                                    </form>
+                                    <a th:href="@{'/link/' + ${link.id}}" data-method="DELETE" class="text-danger" style="text-decoration:none"><i class="far fa-trash-alt"></i></a>
                                 </div>
                             </div>
                             <br>
@@ -107,7 +113,7 @@
                                         You wrote a comment:
                                         "<span th:text="${comment.getBody()}"></span>"
                                         in the
-                                        <a class="title" th:href="@{'/link/' + ${comment.getLink().getId()}}" target="_blank">link</a>.
+                                        <a class="title" th:href="@{'/link/' + ${comment.getLink().getId()}}" target="">link</a>.
                                     </p>
                                 </div>
                             </div>

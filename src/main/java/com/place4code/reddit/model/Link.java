@@ -38,20 +38,25 @@ public class Link extends Auditable {
     @URL(message = "Please enter a valid URL")
     private String url;
 
-    @OneToMany(mappedBy = "link")
+    @OneToMany(mappedBy = "link", cascade = CascadeType.ALL)
     private List<Vote> votes = new ArrayList<>();
     private int votesCounter = 0;
 
-    @OneToMany(mappedBy = "link")
+    //likes
+    @OneToMany(mappedBy = "link", cascade = CascadeType.ALL)
     private List<Likes> likes = new ArrayList<>();
     private int likesCounter = 0;
 
+    //comments
+    @OneToMany(mappedBy = "link", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
+
+    //favourites
+    @OneToMany(mappedBy = "link", cascade = CascadeType.ALL)
+    private List<Fav> favs = new ArrayList<>();
+
     @ManyToOne
     private User user;
-
-    //comments
-    @OneToMany(mappedBy = "link")
-    private List<Comment> comments = new ArrayList<>();
 
     public Link(@NotNull String titel, @NotNull String url) {
         this.titel = titel;

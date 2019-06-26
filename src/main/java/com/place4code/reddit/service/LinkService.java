@@ -32,4 +32,8 @@ public class LinkService {
         return linkRepo.findAllByUserId(id);
     }
 
+    public void delete(Link link) {
+        linkRepo.delete(link);
+    }
+
 }
