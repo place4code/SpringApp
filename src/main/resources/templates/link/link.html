@@ -41,7 +41,7 @@
 
                  <a th:href="${link.url}" class="btn btn-light btn-sm"><i class="fas fa-globe-europe"></i> <span th:text="|${link.getShortUrl()}...|"></span></a>
                  <hr>
-                 <a href="#" class="text-secondary" style="text-decoration: none;"><i class="far fa-heart"></i> add to favourite</a>
+                 <a th:href="@{'/link/' + ${link.getId()} + '/favourite'}" class="text-secondary" style="text-decoration: none;"><i class="far fa-heart"></i> add to favourite</a>
                  <span class="text-danger"><i class="fas fa-heart"></i> favourite</span>
                  &nbsp;
                  <a th:data-canLike="${canLike}" th:data-id="${link.id}" href="#" class="text-secondary" id="likeBtn" style="text-decoration: none;"><i class="far fa-thumbs-up"></i> like</a>
