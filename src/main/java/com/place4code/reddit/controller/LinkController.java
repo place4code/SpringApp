@@ -91,12 +91,12 @@ public class LinkController {
 
     @Secured({"ROLE_USER"})
     @DeleteMapping("/link/{id}")
-    public String deleteLink(@PathVariable Long id) {
-        System.out.println("delete mapping ");
+    public String deleteLink(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        System.out.println("delete mapping " + id);
 
-        User user1 = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        Optional<User> tempUser = Optional.ofNullable(userService.findByLogin(user1.getLogin()));
+        Optional<User> tempUser = Optional.ofNullable(userService.findByLogin(loggedUser.getLogin()));
         Optional<Link> tempLink = linkService.findById(id);
 
         if (tempLink.isPresent() && tempUser.isPresent()) {
@@ -105,16 +105,48 @@ public class LinkController {
 
             //this is a link of currently logged user?
             if (link.getUser().equals(user)) {
-                linkService.delete(link);
+                System.out.println("link id: " + id);
+                linkService.deleteById(id);
                 System.out.println("link deleted");
+                redirectAttributes.addFlashAttribute("message",
+                        "The link has been removed");
+                redirectAttributes.addFlashAttribute("error",
+                        false);
             }
 
         }
 
-
-
-        return "redirect:/";
+        return "redirect:/user/" + tempUser.get().getLogin();
     }
+
+    /*@GetMapping("/link/{id}/delete")
+    public String deleteLink2(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        System.out.println("delete mapping " + id);
+
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<User> tempUser = Optional.ofNullable(userService.findByLogin(loggedUser.getLogin()));
+        Optional<Link> tempLink = linkService.findById(id);
+
+        if (tempLink.isPresent() && tempUser.isPresent()) {
+            Link link = tempLink.get();
+            User user = tempUser.get();
+
+            //this is a link of currently logged user?
+            if (link.getUser().equals(user)) {
+                System.out.println("link id: " + id);
+                linkService.deleteById(id);
+
+                redirectAttributes.addFlashAttribute("message",
+                        "The link has been removed");
+                redirectAttributes.addFlashAttribute("error",
+                        false);
+            }
+
+        }
+
+        return "redirect:/user/" + tempUser.get().getLogin();
+    }*/
 
     // form view to create a new Link
     @GetMapping("/link/submit")

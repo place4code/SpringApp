@@ -5,6 +5,7 @@ import com.place4code.reddit.model.Link;
 import com.place4code.reddit.repo.LikeRepo;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +31,10 @@ public class LikeService {
 
     public Optional<Likes> findFirstByLinkAndUserId(Link link, Long id) {
         return likeRepo.findFirstByLinkAndUserId(link, id);
+    }
+
+    public List<Likes> findAllByUserId(Long id) {
+        return likeRepo.findAllByUserId(id);
     }
 
     public void delete(Likes like) {

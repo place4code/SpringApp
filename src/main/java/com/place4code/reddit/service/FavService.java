@@ -5,6 +5,7 @@ import com.place4code.reddit.model.Link;
 import com.place4code.reddit.repo.FavRepo;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,6 +27,10 @@ public class FavService {
 
     public void delete(Fav fav) {
         favRepo.delete(fav);
+    }
+
+    public List<Fav> findAllByUserId(Long id) {
+        return favRepo.findAllByUserId(id);
     }
 
 }

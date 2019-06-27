@@ -36,4 +36,7 @@ public class LinkService {
         linkRepo.delete(link);
     }
 
+    public void deleteById(Long id) {
+        linkRepo.deleteById(id);
+    }
 }

@@ -1,10 +1,10 @@
 package com.place4code.reddit.controller;
 
-import com.place4code.reddit.model.Comment;
-import com.place4code.reddit.model.Link;
-import com.place4code.reddit.model.User;
+import com.place4code.reddit.model.*;
 import com.place4code.reddit.repo.CommentRepo;
 import com.place4code.reddit.repo.LinkRepo;
+import com.place4code.reddit.service.FavService;
+import com.place4code.reddit.service.LikeService;
 import com.place4code.reddit.service.StorageService;
 import com.place4code.reddit.service.UserService;
 import org.springframework.security.access.annotation.Secured;
@@ -28,13 +28,17 @@ public class ProfileController {
     private CommentRepo commentService;
     private final StorageService storageService;
     private UserService userService;
+    private LikeService likeService;
+    private FavService favService;
 
 
-    public ProfileController(LinkRepo linkService, CommentRepo commentService, StorageService storageService, UserService userService) {
+    public ProfileController(LinkRepo linkService, CommentRepo commentService, StorageService storageService, UserService userService, LikeService likeService, FavService favService) {
         this.linkService = linkService;
         this.commentService = commentService;
         this.storageService = storageService;
         this.userService = userService;
+        this.likeService = likeService;
+        this.favService = favService;
     }
 
     @Secured({"ROLE_USER"})
@@ -58,6 +62,12 @@ public class ProfileController {
         //find user's comments
         List<Comment> comments = commentService.findAllByCreatedBy(profileOwner.getEmail());
 
+        //find user's likes
+        List<Likes> likes = likeService.findAllByUserId(profileOwner.getId());
+
+        //find user' favourite
+        List<Fav> favourites = favService.findAllByUserId(profileOwner.getId());
+
         if (profileOwner.isAvatar()) {
             model.addAttribute("avatar", profileOwner.getLogin() + ".jpg");
         } else {
@@ -66,6 +76,8 @@ public class ProfileController {
 
         model.addAttribute("owner", isOwner);
         model.addAttribute("comments", comments);
+        model.addAttribute("likes", likes);
+        model.addAttribute("favourites", favourites);
         model.addAttribute("counterComments", comments.size());
         model.addAttribute("counterLinks", links.size());
         model.addAttribute("email", profileOwner.getEmail());
