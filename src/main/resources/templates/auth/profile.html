@@ -87,7 +87,6 @@
 
                         <div th:each="link : ${links}">
                             <div class="card text-center">
-                                <span th:text="${link.getId()}"></span>
                                 <div class="card-body">
                                     <p class="card-title">
 
@@ -97,15 +96,18 @@
                                 </div>
                                 <div class="card-footer text-muted">
 
-                                    <span th:text="${link.getComments().size()}"></span> <i class="far fa-comments"></i>
-                                    &nbsp;
-                                    <time class="live-timestamp" th:text="${link.getPrettyDifference()}"></time>
-                                    &nbsp;|&nbsp;
-                                    <!--<a class="text-danger" th:href="@{'/link/' + ${link.getId()} + '/delete'}" target="" style="text-decoration:none"><i class="far fa-trash-alt"></i></a>-->
 
-                                    <form th:action="@{'/link/' + ${link.getId()}}" th:method="delete" >
+                                    <form th:action="@{'/link/' + ${link.getId()}}" th:method="delete" class="form">
                                         <input type="hidden" name="_method" value="delete" />
-                                        <button type="submit" id="submitButton"> delete </button>
+
+
+                                        <span th:text="${link.getVotesCounter()}"></span> <i class="fas fa-medal text-warning"></i>
+                                        &nbsp;
+                                        <span th:text="${link.getComments().size()}"></span> <i class="far fa-comments text-success"></i>
+                                        &nbsp;
+                                        <time class="live-timestamp" th:text="${link.getPrettyDifference()}"></time>
+                                        &nbsp;|&nbsp;&nbsp;&nbsp;
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" id="submitButton"><i class="far fa-trash-alt"></i></button>
                                     </form>
 
                                 </div>
@@ -163,6 +165,11 @@
                                 <div class="card-body">
 
                                     <i class="far fa-thumbs-up text-primary"></i> &nbsp;  <a class="title text-body" th:href="@{'/link/' + ${like.getLink().getId()}}" target="" th:text="${like.getLink().getTitel()}" style="text-decoration:none;">link</a>.
+                                    &nbsp; | &nbsp;
+                                    <span th:text="${like.getLink().getVotesCounter()}"></span> <i class="fas fa-medal text-warning"></i>
+
+                                    <span th:text="${like.getLink().getComments().size()}"></span> <i class="far fa-comments text-success"></i>
+
 
                                 </div>
                             </div>
@@ -177,7 +184,11 @@
                         <div th:each="favourite : ${favourites}">
                             <div class="card">
                                 <div class="card-body">
-                                    <i class="fas fa-heart text-danger"></i> &nbsp;  <a class="title text-body" th:href="@{'/link/' + ${favourite.getLink().getId()}}" target="" th:text="${favourite.getLink().getTitel()}" style="text-decoration:none;">link</a>.
+                                    <i class="fas fa-heart text-danger"></i> &nbsp;  <a class="title text-body" th:href="@{'/link/' + ${favourite.getLink().getId()}}" target="" th:text="${favourite.getLink().getTitel()}" style="text-decoration:none;"></a>.
+                                    &nbsp; | &nbsp;
+                                    <span th:text="${favourite.getLink().getVotesCounter()}"></span> <i class="fas fa-medal text-warning"></i>
+
+                                    <span th:text="${favourite.getLink().getComments().size()}"></span> <i class="far fa-comments text-success"></i>
 
                                 </div>
                             </div>

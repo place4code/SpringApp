@@ -25,6 +25,7 @@ public class Link extends Auditable {
 
     @NotNull
     @NotEmpty(message = "Please enter a title")
+    @Size(min = 8, max = 150)
     private String titel;
 
     @NotNull
