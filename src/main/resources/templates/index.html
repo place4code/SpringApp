@@ -19,61 +19,37 @@
 <div class="container">
 
 
+    <div class="card" th:each="link : ${links}" style="margin-bottom:16px;">
 
-
-
-
-
-<div th:each="link : ${links}">
-    <div class="card text-center">
         <div class="card-body">
-            <p class="card-title">
-                <div>
-                    <a href="" class="upvote" th:data-id="${link.id}"><i class="fas fa-arrow-up"></i></a>
-                    <span th:id="|votesCounter-${link.id}|" class="votesCounter" th:text="${link.getVotesCounter()}">0</span>
-                    <a href="" class="downvote" th:data-id="${link.id}" th:disabled="true"><i class="fas fa-arrow-down"></i></a>
-                </div>
-                <a class="title" th:href="@{'/link/' + ${link.id}}" target="_blank" th:text="${link.titel}"></a>
+
+            <p class="text-black-50">
+                <a th:href="@{'/user/' + ${link.getUser().getLogin()}}" class="author text-muted" th:text="${link.getUser().getLogin()}"></a>
+                <time class="live-timestamp" th:text="${link.getPrettyDifference()}"></time>
+            </p>
+
+            <p>
+                <span class="h5">
+                    <a th:href="@{'/link/' + ${link.id}}" th:text="${link.titel}" class="text-body"></a></span>
                 <span class="domain">(<a th:href="${link.url}" th:text="${link.getShortUrl()}"></a>)</span>
             </p>
-        </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-                <a th:href="@{'/link/' + ${link.id} + '#comments'}" class="comments" th:text="|${link.getComments().size()} comments|"><i class="fas fa-comments"></i>comments</a>
-            </li>
-        </ul>
-        <div class="card-footer text-muted">
-            <time class="live-timestamp" th:text="${link.getPrettyDifference()}"></time> by
-            <a th:href="@{'/user/' + ${link.getUser().getLogin()}}" class="author" th:text="${link.getUser().getLogin()}"></a>
+
+            <hr>
+
+            <div class="text-black-50">
+
+                <span th:text="${link.getComments().size()}"></span> <i class="far fa-comments text-success"></i> |
+                <span th:text="${link.getLikesCounter()}" th:data-likes="${link.getLikesCounter()}" id="likesCount"></span> <i class="far fa-thumbs-up text-primary"></i> |
+                <span th:text="${link.getVotesCounter()}">0</span> <i class="fas fa-medal text-warning"></i>
+
+            </div>
+
+
         </div>
     </div>
-    <br>
-</div>
-
-
-
 
 
 </div>
-
-
-<script sec:authorize="isFullyAuthenticated()">
-    const allvotes = document.querySelectorAll(".upvote, .downvote");
-    for(let i=0; i<allvotes.length; i++) {
-        let className = allvotes[i].className;
-        allvotes[i].addEventListener('click', function (event) {
-            const direction = className === 'upvote' ? 1 : -1;
-            const linkID = this.getAttribute("data-id");
-            const voteSum = document.getElementById('votesCounter-' + linkID);
-            const voteSumValue = voteSum.innerHTML;
-
-            fetch(`http://localhost:8090/vote/link/${linkID}/direction/${direction}/votesCounter/${voteSumValue}`)
-                .then(response => response.json())
-                .then(data => voteSum.innerHTML = data)
-                .catch(err => console.error(err));
-        });
-    }
-</script>
 
 
 

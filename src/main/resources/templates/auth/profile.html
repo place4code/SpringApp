@@ -36,7 +36,7 @@
 
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="thome-tab" data-toggle="tab" href="#thome" role="tab" aria-controls="thome" aria-selected="true">Overview</a>
+                        <a class="nav-link active" id="thome-tab" data-toggle="tab" href="#thome" role="tab" aria-controls="thome" aria-selected="true"><i class="fas fa-chalkboard-teacher"></i> Overview</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="tprofile-tab" data-toggle="tab" href="#tprofile" role="tab" aria-controls="tprofile" aria-selected="false">Links (<span th:text="${links.size()}"></span>)</a>
@@ -58,24 +58,34 @@
                 <div class="tab-content" id="myTabContent">
 
                     <div class="tab-pane fade show active" id="thome" role="tabpanel" aria-labelledby="thome-tab">
+
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-md-4">
                                 <div class="alert alert-success card-overview text-center" role="alert">
                                     <h4 class="alert-heading"><i class="fas fa-link fa-3x"></i></h4>
                                     <p th:if="${owner}">You have <span th:text="${counterLinks}"></span> links!</p>
                                     <p th:if="${!owner}">This user have <span th:text="${counterLinks}"></span> links!</p>
-                                    <hr>
-                                    <p class="mb-0" th:if="${owner}">
-                                        <a th:href="@{/link/submit}"><button type="button" class="btn btn-success"><i class="fas fa-plus-circle"></i> add a new</button></a>
-                                    </p>
+
                                 </div>
                             </div>
-                            <div class="col-lg-4">
-                                <div class="alert alert-success card-overview text-center" role="alert">
-                                    <h4 class="alert-heading"><i class="far fa-comment fa-3x"></i></h4>
+                            <div class="col-md-4">
+                                <div class="alert alert-warning card-overview text-center" role="alert">
+                                    <h4 class="alert-heading"><i class="fas fa-pencil-alt fa-3x"></i></h4>
                                     <p th:if="${owner}">You wrote <span th:text="${counterComments}"></span> comments!</p>
                                     <p th:if="${!owner}">This user wrote <span th:text="${counterComments}"></span> comments!</p>
-                                    <hr>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="alert alert-primary card-overview text-center" role="alert">
+                                    <h4 class="alert-heading"><i class="far fa-thumbs-up fa-3x"></i></h4>
+                                    <p th:if="${owner}">You like <span th:text="${likes.size()}"></span> posts</p>
+                                    <p th:if="${!owner}">This user like <span th:text="${likes.size()}"></span> posts!</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="alert alert-danger card-overview text-center" role="alert">
+                                    <h4 class="alert-heading"><i class="far fa-heart fa-3x"></i></h4>
+                                    <p><span th:text="${favourites.size()}"></span> links as favorites</p>
                                 </div>
                             </div>
                         </div>
@@ -102,11 +112,13 @@
 
 
                                         <span th:text="${link.getVotesCounter()}"></span> <i class="fas fa-medal text-warning"></i>
-                                        &nbsp;
+
                                         <span th:text="${link.getComments().size()}"></span> <i class="far fa-comments text-success"></i>
-                                        &nbsp;
+
+                                        <span th:text="${link.getLikesCounter()}"></span> <i class="far fa-thumbs-up text-primary"></i>
+                                        &nbsp;|&nbsp;
                                         <time class="live-timestamp" th:text="${link.getPrettyDifference()}"></time>
-                                        &nbsp;|&nbsp;&nbsp;&nbsp;
+                                        &nbsp;|&nbsp;
                                         <button type="submit" class="btn btn-sm btn-outline-danger" id="submitButton"><i class="far fa-trash-alt"></i></button>
                                     </form>
 
@@ -121,12 +133,13 @@
                         <div th:each="comment : ${comments}">
                             <div class="card">
                                 <div class="card-body">
-                                    <p class="card-title">
+                                        <i class="fas fa-pencil-alt text-warning"></i>
+                                        &nbsp;
                                         You wrote a comment:
                                         "<span th:text="${comment.getBody()}"></span>"
                                         in the
                                         <a class="title" th:href="@{'/link/' + ${comment.getLink().getId()}}" target="">link</a>.
-                                    </p>
+
                                 </div>
                             </div>
                             <br>
@@ -170,6 +183,7 @@
 
                                     <span th:text="${like.getLink().getComments().size()}"></span> <i class="far fa-comments text-success"></i>
 
+                                    <span th:text="${like.getLink().getLikesCounter()}"></span> <i class="far fa-thumbs-up text-primary"></i>
 
                                 </div>
                             </div>
@@ -189,6 +203,8 @@
                                     <span th:text="${favourite.getLink().getVotesCounter()}"></span> <i class="fas fa-medal text-warning"></i>
 
                                     <span th:text="${favourite.getLink().getComments().size()}"></span> <i class="far fa-comments text-success"></i>
+
+                                    <span th:text="${favourite.getLink().getLikesCounter()}"></span> <i class="far fa-thumbs-up text-primary"></i>
 
                                 </div>
                             </div>
@@ -211,6 +227,12 @@
                             <a th:href="|@{/user/}${profileOwner.getLogin()}|" class="card-link">
                                 <i class="fas fa-fingerprint fa-lg"></i> <span th:text="${profileOwner.getLogin()}">Account</span>
                             </a>
+
+                            <hr>
+                            <p class="mb-0" th:if="${owner}">
+                                <a th:href="@{/link/submit}"><button type="button" class="btn btn-outline-success"><i class="fas fa-plus"></i> add a new link</button></a>
+                            </p>
+
                         </div>
                     </div>
                 </div>
@@ -219,11 +241,15 @@
                     <div class="card col-12">
                         <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
                         <div class="card-body">
-                            <h5 class="card-title">Profile:</h5>
+                            <h5 class="card-title"><i class="fas fa-chalkboard-teacher"></i> Profile:</h5>
+                            <hr>
                             <p class="card-text">
-                                Links: <span th:text="${counterLinks}"></span><br/>
-                                Comments: <span th:text="${counterComments}"></span><br/>
-                                E-mail: <span th:text="${email}" th:if="${owner}"></span><span th:if="${!owner}"><i class="fas fa-lock"></i></span> <i th:if="${owner}" class="fas fa-shield-alt text-success" data-toggle="tooltip" data-placement="top" title="Only you can see the elements marked with a shield" style="cursor: help;"></i><br/>
+                                <i class="fas fa-link text-success"></i> Links: <span th:text="${counterLinks}"></span><br/>
+                                <i class="fas fa-pencil-alt text-warning"></i> Comments: <span th:text="${counterComments}"></span><br/>
+                                <i class="far fa-thumbs-up text-primary"></i> Likes: <span th:text="${likes.size()}"></span><br/>
+                                <i class="fas fa-heart text-danger"></i> Favourites: <span th:text="${favourites.size()}"></span>
+                                <hr>
+                                <i class="far fa-envelope text-muted"></i> <span th:text="${email}" th:if="${owner}"></span><span th:if="${!owner}"><i class="fas fa-lock"></i></span> <i th:if="${owner}" class="fas fa-shield-alt text-success" data-toggle="tooltip" data-placement="top" title="Only you can see the elements marked with a shield" style="cursor: help;"></i><br/>
                             </p>
                         </div>
 

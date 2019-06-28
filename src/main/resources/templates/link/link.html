@@ -23,7 +23,7 @@
              <div class="card-body">
                     <div class="text-center">
                     <a href="#" class="upvote" th:data-id="${link.id}" style="color: green"><i class="fas fa-arrow-up"></i></a>&nbsp;&nbsp;
-                    <span th:id="|votesCounter-${link.id}|" class="votesCounter" th:text="${link.getVotesCounter()}">0</span>&nbsp;&nbsp;
+                    <span th:id="|votesCounter-${link.id}|" class="votesCounter" th:text="${link.getVotesCounter()}">0</span> <i class="fas fa-medal text-warning"></i> &nbsp;
                     <a href="#" class="downvote" th:data-id="${link.id}" th:disabled="true" style="color: red"><i class="fas fa-arrow-down"></i></a>
              </div>
 
