@@ -30,12 +30,12 @@ public class User implements UserDetails {
     private Long id;
 
     @NotNull
-    @Size(min = 8, max = 32)
+    @Size(min = 8, max = 32, message = "the email must be between 8 and 32 characters long")
     @Column(nullable = false, unique = true)
     private String email;
 
     @NotNull
-    @Size(min = 8, max = 128)
+    @Size(min = 8, max = 128, message = "the password must be between 8 and 128 characters long")
     private String password;
 
     @Transient
