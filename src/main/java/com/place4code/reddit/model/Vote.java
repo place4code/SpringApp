@@ -16,14 +16,18 @@ public class Vote {
     private Long id;
 
     @NotNull
-    private short direction;
+    private Long userId;
 
     @NotNull
     @ManyToOne
     private Link link;
 
-    public Vote(@NotNull short direction, @NotNull Link link) {
-        this.direction = direction;
+    @NotNull
+    private short direction;
+
+    public Vote(@NotNull Long userId, @NotNull Link link, @NotNull short direction) {
+        this.userId = userId;
         this.link = link;
+        this.direction = direction;
     }
 }

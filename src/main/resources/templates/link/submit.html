@@ -41,7 +41,7 @@
                         <small th:errors="*{url}" style="color:red;"></small>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Submit</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
                 </form>
             </div>
             <div class="col-md-3"></div>
@@ -73,6 +73,10 @@
         canSend();
     }
 
+    url.onkeyup = function() {
+        canSend();
+    }
+
     function canSend() {
 
         if(descLength >= 0 && descLength <= 1000) {
@@ -88,11 +92,11 @@
             charRemaining.innerHTML = '<br><i class="far fa-bell text-danger"></i> You have ' + (titleLength - 150) + ' too much.';
         }
 
-        if(descLength >= 8 && descLength <= 1000 && titleLength >= 8 && titleLength <= 150) {
+        /*if(descLength >= 8 && descLength <= 1000 && titleLength >= 8 && titleLength <= 150) {
             submitBtn.disabled = false;
         } else {
             submitBtn.disabled = true;
-        }
+        }*/
 
     }
 

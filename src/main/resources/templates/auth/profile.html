@@ -47,7 +47,7 @@
                     <li class="nav-item" th:if="${owner}">
                         <a class="nav-link" id="tfav-tab" data-toggle="tab" href="#tfav" role="tab" aria-controls="tfav" aria-selected="false">Favourites (<span th:text="${favourites.size()}"></span>) <i class='far fa-heart'></i></a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" th:if="${owner}">
                         <a class="nav-link" id="tcomments-tab" data-toggle="tab" href="#tcomments" role="tab" aria-controls="tcomments" aria-selected="false">Comments</a>
                     </li>
                     <li class="nav-item" th:if="${owner}">
@@ -63,29 +63,29 @@
                             <div class="col-md-4">
                                 <div class="alert alert-success card-overview text-center" role="alert">
                                     <h4 class="alert-heading"><i class="fas fa-link fa-3x"></i></h4>
-                                    <p th:if="${owner}">You have <span th:text="${counterLinks}"></span> links!</p>
-                                    <p th:if="${!owner}">This user have <span th:text="${counterLinks}"></span> links!</p>
+                                    <p th:if="${owner}">You have <span th:text="${links.size()}"></span> link<span th:if="${links.size() > 1}">s</span>!</p>
+                                    <p th:if="${!owner}">This user have <span th:text="${links.size()}"></span> link<span th:if="${links.size() > 1}">s</span>!</p>
 
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="alert alert-warning card-overview text-center" role="alert">
                                     <h4 class="alert-heading"><i class="fas fa-pencil-alt fa-3x"></i></h4>
-                                    <p th:if="${owner}">You wrote <span th:text="${counterComments}"></span> comments!</p>
-                                    <p th:if="${!owner}">This user wrote <span th:text="${counterComments}"></span> comments!</p>
+                                    <p th:if="${owner}">You wrote <span th:text="${counterComments}"></span> comment<span th:if="${counterComments > 1}">s</span>!</p>
+                                    <p th:if="${!owner}">This user wrote <span th:text="${counterComments}"></span> comment<span th:if="${counterComments > 1}">s</span>!</p>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="alert alert-primary card-overview text-center" role="alert">
                                     <h4 class="alert-heading"><i class="far fa-thumbs-up fa-3x"></i></h4>
-                                    <p th:if="${owner}">You like <span th:text="${likes.size()}"></span> posts</p>
-                                    <p th:if="${!owner}">This user like <span th:text="${likes.size()}"></span> posts!</p>
+                                    <p th:if="${owner}">You like <span th:text="${likes.size()}"></span> post<span th:if="${likes.size() > 1}">s</span></p>
+                                    <p th:if="${!owner}">This user like <span th:text="${likes.size()}"></span> post<span th:if="${likes.size() > 1}">s</span>!</p>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="alert alert-danger card-overview text-center" role="alert">
                                     <h4 class="alert-heading"><i class="far fa-heart fa-3x"></i></h4>
-                                    <p><span th:text="${favourites.size()}"></span> links as favorites</p>
+                                    <p><span th:text="${favourites.size()}"></span> link<span th:if="${favourites.size() > 1}">s</span> as favorites</p>
                                 </div>
                             </div>
                         </div>
@@ -128,7 +128,7 @@
                         </div>
                     </div>
 
-                    <div class="tab-pane fade" id="tcomments" role="tabpanel" aria-labelledby="tcomments-tab">
+                    <div class="tab-pane fade" id="tcomments" role="tabpanel" aria-labelledby="tcomments-tab" th:if="${owner}">
                         <br>
                         <div th:each="comment : ${comments}">
                             <div class="card">

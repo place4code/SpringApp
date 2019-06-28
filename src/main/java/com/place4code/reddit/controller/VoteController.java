@@ -1,7 +1,6 @@
 package com.place4code.reddit.controller;
 
 import com.place4code.reddit.model.Link;
-import com.place4code.reddit.model.Vote;
 import com.place4code.reddit.service.LinkService;
 import com.place4code.reddit.service.VoteService;
 import org.springframework.security.access.annotation.Secured;
@@ -29,6 +28,50 @@ public class VoteController {
                     @PathVariable short direction,
                     @PathVariable int votesCounter) {
 
+//        //try to find a link
+//        Optional<Link> tempLink= linkService.findById(id);
+//        // Who is logged
+//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//
+//        if (tempLink.isPresent()) {
+//
+//            Link link = tempLink.get();
+//
+//            Optional<Vote> tempVote = voteService.findByUserIdAndLinkAndDirection(user.getId(), link, direction);
+//
+//            if (!tempVote.isPresent()) {
+//
+//                Optional<Vote> reverseVoteTemp = voteService.findByUserIdAndLinkAndDirection(user.getId(), link, (short)(direction * (-1)));
+//
+//                if (reverseVoteTemp.isPresent()) {
+//
+//                    Vote reverseVote = reverseVoteTemp.get();
+//                    voteService.delete(reverseVote);
+//
+//                    link.setVotesCounter( votesCounter + (short)(direction * (-1)));
+//                    linkService.save(link);
+//
+//                    return votesCounter + (direction * (-1));
+//
+//                } else {
+//
+//                    voteService.save(new Vote(user.getId(), link, direction));
+//                    link.setVotesCounter( votesCounter + (direction * (-1)));
+//                    linkService.save(link);
+//
+//                    return votesCounter + (direction * (-1));
+//
+//                }
+//
+//
+//
+//            }
+//
+//
+//        }
+//        //return counter
+//        return votesCounter;
+
         //try to find a link
         Optional<Link> tempLink= linkService.findById(id);
 
@@ -36,8 +79,6 @@ public class VoteController {
 
             //save vote
             Link link = tempLink.get();
-            Vote vote = new Vote(direction, link);
-            voteService.save(vote);
 
             //update counter
             link.setVotesCounter(votesCounter + direction);
@@ -49,5 +90,7 @@ public class VoteController {
         //return counter
         return votesCounter;
     }
+
+
 
 }

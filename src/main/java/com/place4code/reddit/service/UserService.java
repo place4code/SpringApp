@@ -89,7 +89,12 @@ public class UserService {
         return userRepo.findByLogin(login).get();
     }
 
+    public Optional<User> findByLoginX(String login) {
+        return userRepo.findByLogin(login);
+    }
+
     public Optional<User> findByEmail(String email) {
         return userRepo.findByEmail(email);
     }
+
 }

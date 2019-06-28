@@ -48,39 +48,47 @@ public class ProfileController {
         // Who is logged
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         // profile owner
-        User profileOwner = userService.findByLogin(login);
+        Optional<User> profileOwnerTemp = userService.findByLoginX(login);
 
-        boolean isOwner = false;
-        if (login.equals(user.getLogin())) isOwner = true;
+        if (profileOwnerTemp.isPresent()) {
+            User profileOwner = profileOwnerTemp.get();
 
-        //find user's links
-        List<Link> links = linkService.findAllByUserId(profileOwner.getId());
+            boolean isOwner = false;
+            if (login.equals(user.getLogin())) isOwner = true;
 
-        //find user's comments
-        List<Comment> comments = commentService.findAllByCreatedBy(profileOwner.getEmail());
+            //find user's links
+            List<Link> links = linkService.findAllByUserId(profileOwner.getId());
 
-        //find user's likes
-        List<Likes> likes = likeService.findAllByUserId(profileOwner.getId());
+            //find user's comments
+            List<Comment> comments = commentService.findAllByCreatedBy(profileOwner.getEmail());
 
-        //find user' favourite
-        List<Fav> favourites = favService.findAllByUserId(profileOwner.getId());
+            //find user's likes
+            List<Likes> likes = likeService.findAllByUserId(profileOwner.getId());
 
-        if (profileOwner.isAvatar()) {
-            model.addAttribute("avatar", profileOwner.getLogin() + ".jpg");
-        } else {
-            model.addAttribute("avatar", "demo.jpg");
+            //find user' favourite
+            List<Fav> favourites = favService.findAllByUserId(profileOwner.getId());
+
+            if (profileOwner.isAvatar()) {
+                model.addAttribute("avatar", profileOwner.getLogin() + ".jpg");
+            } else {
+                model.addAttribute("avatar", "demo.jpg");
+            }
+
+            model.addAttribute("owner", isOwner);
+            model.addAttribute("comments", comments);
+            model.addAttribute("likes", likes);
+            model.addAttribute("favourites", favourites);
+            model.addAttribute("counterComments", comments.size());
+            model.addAttribute("links", links);
+            model.addAttribute("email", profileOwner.getEmail());
+            model.addAttribute("profileOwner", profileOwner);
+
+            return "auth/profile";
+
         }
 
-        model.addAttribute("owner", isOwner);
-        model.addAttribute("comments", comments);
-        model.addAttribute("likes", likes);
-        model.addAttribute("favourites", favourites);
-        model.addAttribute("counterComments", comments.size());
-        model.addAttribute("links", links);
-        model.addAttribute("email", profileOwner.getEmail());
-        model.addAttribute("profileOwner", profileOwner);
+        return "redirect:/";
 
-        return "auth/profile";
     }
 
     @Secured({"ROLE_USER"})
