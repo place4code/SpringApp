@@ -55,9 +55,6 @@ public class ProfileController {
 
         //find user's links
         List<Link> links = linkService.findAllByUserId(profileOwner.getId());
-        if (!links.isEmpty()) {
-            model.addAttribute("links", links);
-        }
 
         //find user's comments
         List<Comment> comments = commentService.findAllByCreatedBy(profileOwner.getEmail());
@@ -79,7 +76,7 @@ public class ProfileController {
         model.addAttribute("likes", likes);
         model.addAttribute("favourites", favourites);
         model.addAttribute("counterComments", comments.size());
-        model.addAttribute("counterLinks", links.size());
+        model.addAttribute("links", links);
         model.addAttribute("email", profileOwner.getEmail());
         model.addAttribute("profileOwner", profileOwner);
 
