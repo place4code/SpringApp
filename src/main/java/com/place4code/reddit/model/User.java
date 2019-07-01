@@ -56,6 +56,7 @@ public class User implements UserDetails {
 
     @NotNull
     @NotEmpty(message = "Please enter login.")
+    @Size(min = 2, max = 32, message = "login must be between 2 and 32 characters long")
     @Column(nullable = false, unique = true)
     private String login;
 
