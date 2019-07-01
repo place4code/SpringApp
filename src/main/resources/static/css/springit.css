@@ -19,16 +19,15 @@ button.nav-link {
 body {
     background: #ffffff;
     font-family: 'Roboto', sans-serif;
-
 }
 
 /* Jumbotron */
 .jumbotron {
-    background: #17629D;
+    /*background: #17629D;*/
     color:#ffffff;
 }
 .jumbotron {
-    padding: 80px;
+    /*padding: 80px;*/
     padding-bottom: 40px;
 }
 .jumpbotron h2 {

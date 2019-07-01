@@ -67,6 +67,10 @@
                         <i class="fa fa-user-plus" aria-hidden="true"></i> Register</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" th:href="@{/about}">
+                        <i class="far fa-question-circle"></i> About the project</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="https://github.com/place4code/SpringApp">
                         <i class="fab fa-github"></i> GitHub</a>
                 </li>
@@ -76,11 +80,11 @@
 </nav>
 
 <div class="jumbotron jumbotron-fluid" th:fragment="jumbotron">
-    <div class="container" align="center">
+    <!--<div class="container" align="center">
         <br>
         <img th:src="@{/images/bg.png}"/>
         <br>
-    </div>
+    </div>-->
 </div>
 
 <div class="container" th:fragment="content">

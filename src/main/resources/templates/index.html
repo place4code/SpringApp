@@ -4,19 +4,42 @@
 </head>
 <body>
 
+
 <nav th:replace="~{layouts/main_layout :: nav}"></nav>
 
-<div class="jumbotron jumbotron-fluid" th:fragment="jumbotron">
-    <div class="container" align="center">
-        <br>
-        <img th:src="@{/images/bg.png}"/>
-        <h2 class="display-4">reddit clone - demo app</h2>
-        <p class="lead">This is a reddit clone built using <a href="#">Spring Boot 2</a>, <a href="#"></a>Spring Framework 5</a></p>
-        <br>
+
+<div sec:authorize="!isFullyAuthenticated()" th:style="'background: url(/images/bgintro.png) no-repeat center center fixed; background-color: #087ad1;'">
+
+    <div class="container d-flex align-items-center" style="min-height: 100vh;">
+
+        <div class="row">
+
+            <div class="col text-center text-white">
+                <h1 class="cover-heading">Welcome to my sample page.</h1>
+                <hr class="text-white">
+                <p class="lead">Stack: Java <i class="fab fa-java"></i>, Spring Boot <i class="fas fa-leaf"></i>, Hibernate, String Security, Thymeleaf, Lombok, Spring DATA, H2 database</p>
+                <p>
+                    What can you do?
+                    You can register or log in.
+                    Write a new link about which you want to discuss. Add any link to your favorites, or just click "I like it", You can rate any link. You can edit a profile photo and view the profiles of another user.
+
+                </p>
+                <p>
+                    Registration is simple and takes 20 seconds
+                </p>
+                <p>
+                    To see content
+                    <a th:href="@{/login}" class="btn btn-sm btn-outline-light">log in</a> or <a th:href="@{/register}" class="btn btn-sm btn-outline-light">register</a>
+                </p>
+            </div>
+
+        </div>
+
     </div>
+
 </div>
 
-<div class="container">
+<div class="container margin-top-default" sec:authorize="isFullyAuthenticated()">
 
 
     <div class="card" th:each="link : ${links}" style="margin-bottom:16px;">

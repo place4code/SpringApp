@@ -5,9 +5,8 @@
 <body>
 
 <nav th:replace="~{layouts/main_layout :: nav}"></nav>
-<div th:replace="~{layouts/main_layout :: jumbotron}"></div>
 
-<div class="container">
+<div class="container margin-top-default">
 
 
 
@@ -80,7 +79,7 @@
                                 <p class="text-black-50">
                                     <a th:href="@{'/user/' + ${comment.getLogin()}}" class="author text-muted" th:text="${comment.getLogin()}"></a>
                                     &nbsp;&nbsp;<i class="fas fa-history fa-sm"></i>&nbsp;
-                                    <time class="live-timestamp" th:text="${link.getPrettyDifference()}"></time><br>
+                                    <time class="live-timestamp" th:text="${comment.getPrettyDifference()}"></time><br>
                                     <span th:text="${comment.getBody()}"></span>
                                 </p>
                             </div>

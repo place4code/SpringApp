@@ -5,9 +5,8 @@
 <body>
 
 <nav th:replace="~{layouts/main_layout :: nav}"></nav>
-<div th:replace="~{layouts/main_layout :: jumbotron}"></div>
 
-<div class="container">
+<div class="container margin-top-default">
 
     <div class="container" th:if="${message}">
         <div class="row">
@@ -107,9 +106,8 @@
                                 <div class="card-footer text-muted">
 
 
-                                    <form th:action="@{'/link/' + ${link.getId()}}" th:method="delete" class="form">
+                                    <form th:action="@{'/link/' + ${link.getId()}}" th:method="delete" class="form" th:if="${owner}">
                                         <input type="hidden" name="_method" value="delete" />
-
 
                                         <span th:text="${link.getVotesCounter()}"></span> <i class="fas fa-medal text-warning"></i>
 
@@ -121,6 +119,16 @@
                                         &nbsp;|&nbsp;
                                         <button type="submit" class="btn btn-sm btn-outline-danger" id="submitButton"><i class="far fa-trash-alt"></i></button>
                                     </form>
+
+                                    <div th:if="${!owner}">
+                                        <span th:text="${link.getVotesCounter()}"></span> <i class="fas fa-medal text-warning"></i>
+
+                                        <span th:text="${link.getComments().size()}"></span> <i class="far fa-comments text-success"></i>
+
+                                        <span th:text="${link.getLikesCounter()}"></span> <i class="far fa-thumbs-up text-primary"></i>
+                                        &nbsp;|&nbsp;
+                                        <time class="live-timestamp" th:text="${link.getPrettyDifference()}"></time>
+                                    </div>
 
                                 </div>
                             </div>

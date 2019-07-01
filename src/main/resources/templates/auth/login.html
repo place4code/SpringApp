@@ -5,10 +5,16 @@
 <body>
 
 <nav th:replace="~{layouts/main_layout :: nav}"></nav>
-<div th:replace="~{layouts/main_layout :: jumbotron}"></div>
 
-<div class="container">
+<div class="container margin-top-default">
 
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="far fa-bell"></i>
+        You don't have an account? Please <a type="button" class="btn btn-sm btn-outline-success" th:href="@{/register}">register</a> It takes 20 seconds, you will <strong>NOT</strong> have to enter your email or any of your data.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 
     <!-- login -->
     <form class="form-horizontal" role="form" method="POST" th:action="@{/login}">

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserService {
@@ -37,10 +36,10 @@ public class UserService {
         user.setConfirmPassword(secret);
 
         // random String for activation account
-        user.setActivationCode(String.valueOf(UUID.randomUUID()));
+        //user.setActivationCode(String.valueOf(UUID.randomUUID()));
 
         user.setAvatar(false);
-        user.setEnabled(false);
+        user.setEnabled(true);
 
         //add the roles
         user.addRole(roleService.findByName("ROLE_USER"));
@@ -49,7 +48,7 @@ public class UserService {
         save(user);
 
         //send the activation email
-        sendActivationEmail(user);
+        //sendActivationEmail(user);
 
         return user;
     }
