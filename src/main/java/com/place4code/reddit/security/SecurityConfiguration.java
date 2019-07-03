@@ -28,7 +28,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/link/**").hasRole("USER")
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/x/**").permitAll()
-                .antMatchers("/files/**").permitAll()
+                .antMatchers("/about/**").permitAll()
                 .and()
             .formLogin()
                 .loginPage("/login")

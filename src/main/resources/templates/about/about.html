@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layouts/main_layout :: head(title = 'SpringApp index')}">
+</head>
+<body>
+
+
+<nav th:replace="~{layouts/main_layout :: nav}"></nav>
+
+<div class="container margin-top-default">
+
+    <div class="row">
+
+        <div class="col">
+
+            <h1><i class="far fa-bell text-warning"></i> Hi, welcome to my example project.</h1>
+
+            <p>
+                The stuff what I used to write this project:
+            </p>
+
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">JAVA</li>
+                <li class="list-group-item">Spring Framework 5</li>
+                <li class="list-group-item">Spring Boot 2, Spring Security, Spring DATA </li>
+                <li class="list-group-item">Thymeleaf</li>
+                <li class="list-group-item">JavaScript, CSS, HTML, Bootstrap</li>
+            </ul>
+
+            <p style="margin-top:20px;">
+
+                What can you do?
+                You can register or log in.
+                Write a new link about which you want to discuss. Add any link to your favorites, or just click "I like it", You can rate any link. You can edit a profile photo and view the profiles of another user.<br>
+                The entire source code of the project is available on <a href="https://github.com/place4code/SpringApp" type="button" class="btn btn-sm btn-outline-success"><i class="fab fa-github"></i> GitHub</a>
+
+            </p>
+
+
+
+            <blockquote class="blockquote">
+                <p class="mb-0">I know that there is a lot of weaknesses and strange solutions here</p>
+                <footer class="blockquote-footer">but this is my first project in spring boot.</footer>
+            </blockquote>
+
+            <hr>
+
+            <p>
+                I invite you to observe my <a href="https://github.com/place4code" type="button" class="btn btn-sm btn-outline-success"><i class="fab fa-github"></i> GitHub - place4code</a> on which I try to throw in the progress of my learning/work/ projects.
+                <br>
+                I will expand this project in my free time because I started a new clinic project with a course (spring framework beginner to guru) thanks which I want to fill knowledge gaps and improve the solution of this project. That's why I want to start a new project and a new course.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<section th:replace="~{layouts/main_layout :: bootstrap_js}"></section>
+</body>
+</html>
