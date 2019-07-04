@@ -30,7 +30,48 @@
 
         <div class="row">
 
-            <div class="col-lg-8">
+
+            <!-- Right Side -->
+            <div class="col-xl-3 col-lg-4">
+                <div class="row">
+                    <div class="card col-12">
+
+                        <div class="card-body text-center">
+                            <a th:href="|@{/user/}${profileOwner.getLogin()}|" class="card-link">
+                                <i class="fas fa-fingerprint fa-lg"></i> <span th:text="${profileOwner.getLogin()}">Account</span>
+                            </a>
+
+                            <hr>
+                            <p class="mb-0" th:if="${owner}">
+                                <a th:href="@{/link/submit}"><button type="button" class="btn btn-outline-success"><i class="fas fa-plus"></i> add a new link</button></a>
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="card col-12" style="margin-bottom:12px;">
+                        <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-chalkboard-teacher"></i> Profile:</h5>
+                            <hr>
+                            <p class="card-text">
+                                <i class="fas fa-link text-success"></i> Links: <span th:text="${links.size()}"></span><br/>
+                                <i class="fas fa-pencil-alt text-warning"></i> Comments: <span th:text="${counterComments}"></span><br/>
+                                <i class="far fa-thumbs-up text-primary"></i> Likes: <span th:text="${likes.size()}"></span><br/>
+                                <i class="fas fa-heart text-danger"></i> Favourites: <span th:text="${favourites.size()}"></span>
+                            <hr>
+                            <i class="far fa-envelope text-muted"></i> <span th:text="${email}" th:if="${owner}"></span><span th:if="${!owner}"><i class="fas fa-lock"></i></span> <i th:if="${owner}" class="fas fa-shield-alt text-success" data-toggle="tooltip" data-placement="top" title="Only you can see the elements marked with a shield" style="cursor: help;"></i><br/>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-xl-9 col-lg-8">
 
 
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -202,44 +243,7 @@
 
             </div>
 
-            <!-- Right Side -->
-            <div class="col-xl-3 col-lg-4 offset-xl-1 offset-lg-0">
-                <div class="row">
-                    <div class="card col-12">
 
-                        <div class="card-body text-center">
-                            <a th:href="|@{/user/}${profileOwner.getLogin()}|" class="card-link">
-                                <i class="fas fa-fingerprint fa-lg"></i> <span th:text="${profileOwner.getLogin()}">Account</span>
-                            </a>
-
-                            <hr>
-                            <p class="mb-0" th:if="${owner}">
-                                <a th:href="@{/link/submit}"><button type="button" class="btn btn-outline-success"><i class="fas fa-plus"></i> add a new link</button></a>
-                            </p>
-
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="card col-12">
-                        <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fas fa-chalkboard-teacher"></i> Profile:</h5>
-                            <hr>
-                            <p class="card-text">
-                                <i class="fas fa-link text-success"></i> Links: <span th:text="${links.size()}"></span><br/>
-                                <i class="fas fa-pencil-alt text-warning"></i> Comments: <span th:text="${counterComments}"></span><br/>
-                                <i class="far fa-thumbs-up text-primary"></i> Likes: <span th:text="${likes.size()}"></span><br/>
-                                <i class="fas fa-heart text-danger"></i> Favourites: <span th:text="${favourites.size()}"></span>
-                                <hr>
-                                <i class="far fa-envelope text-muted"></i> <span th:text="${email}" th:if="${owner}"></span><span th:if="${!owner}"><i class="fas fa-lock"></i></span> <i th:if="${owner}" class="fas fa-shield-alt text-success" data-toggle="tooltip" data-placement="top" title="Only you can see the elements marked with a shield" style="cursor: help;"></i><br/>
-                            </p>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
 
         </div> <!-- // row -->
 

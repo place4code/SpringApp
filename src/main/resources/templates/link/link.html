@@ -119,6 +119,7 @@
 
 <script sec:authorize="isFullyAuthenticated()">
 
+
     function changeFavourite(data) {
         if (data == 1) {
             favBtn.innerHTML = "<span class='text-danger'><i class='fas fa-heart'></i> favourite</span>";
@@ -132,6 +133,7 @@
     let linkInfo = document.getElementById("linkInfo");
     let linkId = parseInt(linkInfo.getAttribute("data-linkId"));
 
+
     let favBtn = document.getElementById("favBtn");
     let isFavourite = favBtn.getAttribute("data-isFavourite");
 
@@ -144,7 +146,7 @@
     favBtn.addEventListener('click',
         function(event) {
 
-        fetch(`http://localhost:8090/link/${linkId}/favourite`)
+        fetch(`/link/${linkId}/favourite`)
             .then(response => response.json())
             .then(data => changeFavourite(data))
             .catch(err => console.log(err));
@@ -177,7 +179,9 @@
     like_button.addEventListener('click',
     function(event) {
 
-        fetch(`http://localhost:8090/link/${link_id}/likesCounter/${likes}`)
+
+
+        fetch(`/link/${link_id}/likesCounter/${likes}`)
             .then(response => response.json())
             .then(data => likesCount.innerHTML = data)
             .then(likes = likes + 1)
@@ -192,7 +196,7 @@
     unlike_button.addEventListener('click',
     function(event) {
 
-            fetch(`http://localhost:8090/link/${link_id}/likesCounter/${likes}/unlike`)
+            fetch(`/link/${link_id}/likesCounter/${likes}/unlike`)
             .then(response => response.json())
             .then(data => likesCount.innerHTML = data)
             .then(likes = likes - 1)
@@ -214,7 +218,7 @@
             const voteSum = document.getElementById('votesCounter-' + linkID);
             const voteSumValue = voteSum.innerHTML;
 
-            fetch(`http://localhost:8090/vote/link/${linkID}/direction/${direction}/votesCounter/${voteSumValue}`)
+            fetch(`/vote/link/${linkID}/direction/${direction}/votesCounter/${voteSumValue}`)
                 .then(response => response.json())
                 .then(data => voteSum.innerHTML = data)
                 .catch(err => console.error(err));
