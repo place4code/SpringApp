@@ -82,13 +82,13 @@
                         <a class="nav-link" id="tprofile-tab" data-toggle="tab" href="#tprofile" role="tab" aria-controls="tprofile" aria-selected="false">Links (<span th:text="${links.size()}"></span>)</a>
                     </li>
                     <li class="nav-item" th:if="${owner}">
-                        <a class="nav-link" id="tlike-tab" data-toggle="tab" href="#tlike" role="tab" aria-controls="tlike" aria-selected="false">Likes (<span th:text="${likes.size()}"></span>) <i class="far fa-thumbs-up"></i></a>
+                        <a class="nav-link" id="tlike-tab" data-toggle="tab" href="#tlike" role="tab" aria-controls="tlike" aria-selected="false"><i class="far fa-thumbs-up"></i> Likes (<span th:text="${likes.size()}"></span>)</a>
                     </li>
                     <li class="nav-item" th:if="${owner}">
-                        <a class="nav-link" id="tfav-tab" data-toggle="tab" href="#tfav" role="tab" aria-controls="tfav" aria-selected="false">Favourites (<span th:text="${favourites.size()}"></span>) <i class='far fa-heart'></i></a>
+                        <a class="nav-link" id="tfav-tab" data-toggle="tab" href="#tfav" role="tab" aria-controls="tfav" aria-selected="false"><i class='far fa-heart'></i> Favourites (<span th:text="${favourites.size()}"></span>)</a>
                     </li>
                     <li class="nav-item" th:if="${owner}">
-                        <a class="nav-link" id="tcomments-tab" data-toggle="tab" href="#tcomments" role="tab" aria-controls="tcomments" aria-selected="false">Comments</a>
+                        <a class="nav-link" id="tcomments-tab" data-toggle="tab" href="#tcomments" role="tab" aria-controls="tcomments" aria-selected="false"><i class="fas fa-pencil-alt"></i> Comments (<span th:text="${comments.size()}"></span>)</a>
                     </li>
 
 
@@ -182,8 +182,7 @@
                                 <div class="card-body">
                                         <i class="fas fa-pencil-alt text-warning"></i>
                                         &nbsp;
-                                        You wrote a comment:
-                                        "<span th:text="${comment.getBody()}"></span>"
+                                        "<span class="text-muted" th:text="${comment.getBody()}"></span>"
                                         in the
                                         <a class="title" th:href="@{'/link/' + ${comment.getLink().getId()}}" target="">link</a>.
 

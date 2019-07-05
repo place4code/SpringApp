@@ -119,6 +119,39 @@ public class LinkController {
         return "redirect:/user/" + tempUser.get().getLogin();
     }
 
+    @Secured({"ROLE_USER"})
+    @DeleteMapping("/comment/{id}")
+    public String deleteComment(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        System.out.println("delete mapping comment " + id);
+
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<User> tempUser = Optional.ofNullable(userService.findByLogin(loggedUser.getLogin()));
+        Optional<Comment> tempComment = commentService.findById(id);
+
+        if (tempComment.isPresent() && tempUser.isPresent()) {
+            Comment comment = tempComment.get();
+            User user = tempUser.get();
+
+            //this is a comment of currently logged user?
+            if ((comment.getLogin()).equals(user.getLogin())) {
+                System.out.println("comment id: " + id);
+                commentService.delete(comment);
+                System.out.println("comment deleted");
+                redirectAttributes.addFlashAttribute("message",
+                        "The comment has been removed");
+
+                return "redirect:/link/" + comment.getLink().getId();
+
+            }
+
+        }
+
+        return "redirect:/";
+
+
+    }
+
     /*@GetMapping("/link/{id}/delete")
     public String deleteLink2(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         System.out.println("delete mapping " + id);

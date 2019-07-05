@@ -5,6 +5,7 @@ import com.place4code.reddit.repo.CommentRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CommentService {
@@ -23,5 +24,11 @@ public class CommentService {
         return commentRepo.findAllByCreatedBy(email);
     }
 
+    public Optional<Comment> findById(Long id) {
+        return commentRepo.findById(id);
+    }
 
+    public void delete(Comment comment) {
+        commentRepo.delete(comment);
+    }
 }
