@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layouts/main_layout :: head(title = 'SpringApp index')}">
+</head>
+<body>
+
+<nav th:replace="~{layouts/main_layout :: nav}"></nav>
+
+<div class="container margin-top-default">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <h4>Edit Link</h4>
+                <br/>
+                <form method="POST" th:action="@{'/link/edit/' + ${link.id}}" th:object="${link}">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text"
+                                class="form-control"
+                                id="title"
+                                placeholder="Enter Title"
+                                required="required"
+                                th:field="*{titel}">
+                        <small th:errors="*{titel}" style="color:red;"></small>
+                        <p><span id="charRemaining"></span></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="desc">Description</label>
+                        <textarea minlength="1" rows="5" class="form-control" id="desc" placeholder="description" required="required" th:field="*{desc}"></textarea>
+                        <small th:errors="*{desc}" style="color:red;"></small>
+                        <p><span id="charRemaining2"></span></p>
+
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="url">URL</label>
+                        <input type="url" class="form-control" id="url" placeholder="URL" required="required" th:field="*{url}">
+                        <small th:errors="*{url}" style="color:red;"></small>
+                    </div>
+
+                    <button type="submit" class="btn btn-outline-success" id="submitBtn">Save</button>
+                </form>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+
+<script>
+
+    let charRemaining = document.getElementById("charRemaining");
+    let charRemaining2 = document.getElementById("charRemaining2");
+    let submitBtn = document.getElementById("submitBtn");
+
+    let title = document.getElementById('title');
+    let desc = document.getElementById('desc');
+    let url = document.getElementById('url');
+
+    let titleLength = 0;
+    let descLength = 0;
+
+    title.onkeyup = function() {
+        titleLength = this.value.length;
+        canSend();
+    }
+
+    desc.onkeyup = function() {
+        descLength = this.value.length;
+        canSend();
+    }
+
+    url.onkeyup = function() {
+        canSend();
+    }
+
+    function canSend() {
+
+        if(descLength >= 0 && descLength <= 1000) {
+            charRemaining2.innerHTML = "<br><i class='far fa-check-circle text-success'></i> You have " + (1000 - descLength) + " remaining.<hr>";
+
+        } else {
+            charRemaining2.innerHTML = '<br><i class="far fa-bell text-danger"></i> You have ' + (descLength - 1000) + ' too much.';
+        }
+
+        if(titleLength >= 0 && titleLength <= 150) {
+            charRemaining.innerHTML = "<br><i class='far fa-check-circle text-success'></i> You have " + (150 - titleLength) + " remaining.<hr>";
+        } else {
+            charRemaining.innerHTML = '<br><i class="far fa-bell text-danger"></i> You have ' + (titleLength - 150) + ' too much.';
+        }
+
+        /*if(descLength >= 8 && descLength <= 1000 && titleLength >= 8 && titleLength <= 150) {
+            submitBtn.disabled = false;
+        } else {
+            submitBtn.disabled = true;
+        }*/
+
+    }
+
+
+
+
+
+</script>
+
+<section th:replace="~{layouts/main_layout :: bootstrap_js}"></section>
+</body>
+</html>

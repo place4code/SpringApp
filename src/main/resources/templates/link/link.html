@@ -16,6 +16,13 @@
         </button>
     </div>
 
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${messageError}">
+        <span th:text="${messageError}"></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
     <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${success}">
         Your new link was created
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -24,7 +31,6 @@
     </div>
 
     <!-- links -->
-
 
         <div class="card" id="linkInfo" th:data-linkId="${link.id}">
 
@@ -40,6 +46,7 @@
                  <time class="live-timestamp" th:text="${link.getPrettyDifference()}"></time>
              </p>
              <p>
+                 <a th:if="${#authentication.getPrincipal().getLogin()} == ${link.getUser().getLogin()}" th:href="@{'/link/edit/' + ${link.getId()}}" type="button" class="text-secondary" style="margin-right: 16px;"><i class="far fa-edit"></i></a>
                  <span th:text="${link.titel}" class="h4">Title</span>
                  <span class="domain">(<a th:href="${link.url}" th:text="${link.getShortUrl()}"></a>)</span>
              </p>
@@ -89,11 +96,13 @@
                                     <a th:href="@{'/user/' + ${comment.getLogin()}}" class="author text-muted" th:text="${comment.getLogin()}"></a>
                                     &nbsp;&nbsp;<i class="fas fa-history fa-sm"></i>&nbsp;
                                     <time class="live-timestamp" th:text="${comment.getPrettyDifference()}"></time><br>
-                                    <span th:text="${comment.getBody()}"></span>
-                                <form th:action="@{'/comment/' + ${comment.getId()}}" th:method="delete" class="form" th:if="${comment.getLogin() == #authentication.getPrincipal().getLogin()}">
-                                    <input type="hidden" name="_method" value="delete" />
-                                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="far fa-trash-alt"></i></button>
-                                </form>
+                                    <span th:text="${comment.getBody()}"></span><a th:if="${#authentication.getPrincipal().getLogin()} == ${comment.getLogin()}" th:href="@{'/comment/' + ${comment.getId()}}" type="button" class="text-secondary" style="margin-left: 16px;"><i class="far fa-edit"></i></a>
+
+                                    <form th:action="@{'/comment/' + ${comment.getId()}}" th:method="delete" class="form-inline pull-left" th:if="${comment.getLogin() == #authentication.getPrincipal().getLogin()}">
+                                        <input type="hidden" name="_method" value="delete" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger"><i class="far fa-trash-alt"></i></button>
+                                    </form>
+
                                 </p>
                             </div>
                         </div>

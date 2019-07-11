@@ -152,41 +152,72 @@ public class LinkController {
 
     }
 
-    /*@GetMapping("/link/{id}/delete")
-    public String deleteLink2(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        System.out.println("delete mapping " + id);
-
-        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        Optional<User> tempUser = Optional.ofNullable(userService.findByLogin(loggedUser.getLogin()));
-        Optional<Link> tempLink = linkService.findById(id);
-
-        if (tempLink.isPresent() && tempUser.isPresent()) {
-            Link link = tempLink.get();
-            User user = tempUser.get();
-
-            //this is a link of currently logged user?
-            if (link.getUser().equals(user)) {
-                System.out.println("link id: " + id);
-                linkService.deleteById(id);
-
-                redirectAttributes.addFlashAttribute("message",
-                        "The link has been removed");
-                redirectAttributes.addFlashAttribute("error",
-                        false);
-            }
-
-        }
-
-        return "redirect:/user/" + tempUser.get().getLogin();
-    }*/
-
     // form view to create a new Link
     @GetMapping("/link/submit")
     public String createLinkForm(Model model) {
         model.addAttribute("link", new Link());
         return "link/submit";
     }
+
+    @GetMapping("/link/edit/{id}")
+    public String editLinkForm(@PathVariable Long id, Model model) {
+
+        //logged user
+        User tempUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<Link> tempLink = linkService.findById(id);
+
+        if (tempLink.isPresent()) {
+
+            Link link = tempLink.get();
+
+            if ((link.getUser().getLogin()).equals(tempUser.getLogin())) {
+                model.addAttribute("link", link);
+                return "link/edit";
+            }
+
+        }
+
+        return "redirect:/";
+
+    }
+
+    @PostMapping("/link/edit/{id}")
+    public String editLink(@Valid Link link, @PathVariable Long id, RedirectAttributes redirectAttributes) {
+
+        //logged user
+        User tempUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<Link> tempLink = linkService.findById(id);
+
+        if (tempLink.isPresent()) {
+
+            Link linkToSave = tempLink.get();
+
+            // this is a link of currently logged user?
+            if ((linkToSave.getUser().getLogin()).equals(tempUser.getLogin())) {
+
+                linkToSave.setDesc(link.getDesc());
+                linkToSave.setTitel(link.getTitel());
+                linkToSave.setUrl(link.getUrl());
+                linkToSave.setId(id);
+
+                linkService.save(linkToSave);
+                redirectAttributes.addFlashAttribute("message",
+                        "The link has been edited");
+                return "redirect:/link/" + id;
+
+            }
+
+            redirectAttributes.addFlashAttribute("messageError",
+                    "Error");
+            return "redirect:/link/" + id;
+
+        }
+
+        return "redirect:/";
+    }
+
 
     @PostMapping("/link/submit")
     public String createLink(@Valid Link link, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {

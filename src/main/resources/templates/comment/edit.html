@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layouts/main_layout :: head(title = 'SpringApp index')}">
+</head>
+<body>
+
+<nav th:replace="~{layouts/main_layout :: nav}"></nav>
+
+<div class="container margin-top-default">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <h4>Edit comment:</h4>
+                <p th:text="${comment.body}"></p>
+                <br/>
+
+                <div class="row addcomment" sec:authorize="hasRole('ROLE_USER')" id="linkInfo" th:data-linkId="${comment.link.id}">
+                    <div class="col">
+                        <form id="formAddComment" method="POST" th:action="@{'/comment/' + ${comment.id}}" th:object="${comment}">
+                            <input type="hidden" th:field="*{link}"/>
+                            <div class="alert alert-light" role="alert" id="commentInfo">
+                                <i class="fas fa-info"></i> &nbsp;&nbsp;&nbsp; The maximum length of the comment is 512 characters.
+                            </div>
+                            <div class="form-group">
+                                <textarea minlength="1" class="form-control" id="comment" rows="5" th:field="*{body}"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-outline-success" id="submitComment" disabled>Save</button>
+                            <hr>
+                            <span id="charRemaining"></span>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+
+<script sec:authorize="isFullyAuthenticated()">
+
+
+
+    let linkInfo = document.getElementById("linkInfo");
+    let linkId = parseInt(linkInfo.getAttribute("data-linkId"));
+
+    let charRemaining = document.getElementById("charRemaining");
+
+    document.getElementById('comment').onkeyup = function() {
+        var commentLength = this.value.length;
+        if(commentLength >= 0 && commentLength <= 512) {
+            charRemaining.innerHTML = "<i class='far fa-check-circle text-success'></i> You have " + (512 - commentLength) + " remaining.";
+            document.getElementById("submitComment").disabled = false;
+        } else {
+            charRemaining.innerHTML = '<i class="far fa-bell text-danger"></i> You have ' + (commentLength - 512) + ' too much.';
+            document.getElementById("submitComment").disabled = true;
+        }
+
+    }
+
+
+
+</script>
+
+<section th:replace="~{layouts/main_layout :: bootstrap_js}"></section>
+</body>
+</html>

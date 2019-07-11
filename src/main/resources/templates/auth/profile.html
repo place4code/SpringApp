@@ -137,7 +137,7 @@
                             <div class="card text-center">
                                 <div class="card-body">
                                     <p class="card-title">
-
+                                        <a th:if="${#authentication.getPrincipal().getLogin()} == ${link.getUser().getLogin()}" th:href="@{'/link/edit/' + ${link.getId()}}" type="button" class="text-secondary" style="margin-right: 16px;"><i class="far fa-edit"></i></a>
                                         <a class="title" th:href="@{'/link/' + ${link.getId()}}" target="" th:text="${link.titel}"></a>
                                         <span class="domain">(<a th:href="${link.url}" th:text="${link.getShortUrl()}"></a>)</span>
                                     </p>
@@ -185,6 +185,7 @@
                                         "<span class="text-muted" th:text="${comment.getBody()}"></span>"
                                         in the
                                         <a class="title" th:href="@{'/link/' + ${comment.getLink().getId()}}" target="">link</a>.
+                                    <a th:if="${#authentication.getPrincipal().getLogin()} == ${comment.getLogin()}" th:href="@{'/comment/' + ${comment.getId()}}" type="button" class="text-secondary" style="margin-left: 16px;"><i class="far fa-edit"></i></a>
 
                                 </div>
                             </div>
