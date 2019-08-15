@@ -61,8 +61,18 @@ public class User implements UserDetails {
     private String login;
 
     @NotNull
-    @Column(nullable = false)
-    private boolean avatar;
+    private boolean avatar = false;
+
+    @Lob
+    private Byte[] image;
+
+    public Byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(Byte[] image) {
+        this.image = image;
+    }
 
     private String activationCode;
 

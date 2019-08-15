@@ -37,6 +37,7 @@
                     <div class="card col-12">
 
                         <div class="card-body text-center">
+                            <img src="/images/profile_small.png" class="img-fluid" alt="Responsive image" />
                             <a th:href="|@{/user/}${profileOwner.getLogin()}|" class="card-link">
                                 <i class="fas fa-fingerprint fa-lg"></i> <span th:text="${profileOwner.getLogin()}">Account</span>
                             </a>
@@ -89,6 +90,9 @@
                     </li>
                     <li class="nav-item" th:if="${owner}">
                         <a class="nav-link" id="tcomments-tab" data-toggle="tab" href="#tcomments" role="tab" aria-controls="tcomments" aria-selected="false"><i class="fas fa-pencil-alt"></i> Comments (<span th:text="${comments.size()}"></span>)</a>
+                    </li>
+                    <li class="nav-item" th:if="${owner}">
+                        <a class="nav-link" id="tedit-tab" data-toggle="tab" href="#tedit" role="tab" aria-controls="tedit" aria-selected="false"><i class="fas fa-pencil-alt"></i> Edit</a>
                     </li>
 
 
@@ -235,6 +239,21 @@
                             </div>
                             <br>
                         </div>
+
+                    </div>
+
+                    <div class="tab-pane fade" id="tedit" role="tabpanel" aria-labelledby="tfav-tab" th:if="${owner}">
+
+                        <br>
+                        <p>Change image:</p>
+                        <hr>
+                        <form method="post" enctype="multipart/form-data" th:action="@{'/edit/photo'}">
+                            <div class="form-group">
+                                <label for="imagefile">Select file to upload</label>
+                                <input type="file" name="imagefile" class="form-control-file" id="imagefile">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
 
                     </div>
 
