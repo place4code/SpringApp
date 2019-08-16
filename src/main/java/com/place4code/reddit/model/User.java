@@ -63,6 +63,14 @@ public class User implements UserDetails {
     @NotNull
     private boolean avatar = false;
 
+    public boolean isAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(boolean avatar) {
+        this.avatar = avatar;
+    }
+
     @Lob
     private Byte[] image;
 

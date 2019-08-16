@@ -37,7 +37,9 @@
                     <div class="card col-12">
 
                         <div class="card-body text-center">
-                            <img src="/images/profile_small.png" class="img-fluid" alt="Responsive image" />
+
+                            <img th:if="${profileOwner.isAvatar()}" th:src="|@{/user/}${profileOwner.getId()}/avatar|" class="img-fluid" alt="Responsive image" />
+
                             <a th:href="|@{/user/}${profileOwner.getLogin()}|" class="card-link">
                                 <i class="fas fa-fingerprint fa-lg"></i> <span th:text="${profileOwner.getLogin()}">Account</span>
                             </a>

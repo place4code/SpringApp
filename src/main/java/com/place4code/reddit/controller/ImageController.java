@@ -3,13 +3,22 @@ package com.place4code.reddit.controller;
 import com.place4code.reddit.model.User;
 import com.place4code.reddit.service.ImageService;
 import com.place4code.reddit.service.UserService;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
 
 @Controller
 public class ImageController {
@@ -30,41 +39,33 @@ public class ImageController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         imageService.saveImage(user.getId(), file);
-/*
-        if (!file.isEmpty()) {
-            if (file.getContentType().equalsIgnoreCase("image/jpeg")) {
-
-                storageService.store(file);
-
-                Optional<User> tempUser = userService.findByEmail(user.getEmail());
-                if (tempUser.isPresent()) {
-                    User userToSave = tempUser.get();
-                    userToSave.setAvatar(true);
-                    userToSave.setConfirmPassword(user.getPassword());
-                    userService.save(userToSave);
-                }
-
-
-                redirectAttributes.addFlashAttribute("message",
-                        "The photo has been changed");
-                redirectAttributes.addFlashAttribute("error",
-                        false);
-
-
-
-                return "redirect:/user/" + user.getLogin();
-
-            } else {
-
-                redirectAttributes.addFlashAttribute("message",
-                        "The file must be a picture");
-                redirectAttributes.addFlashAttribute("error",
-                        true);
-
-            }
-        }*/
 
         return "redirect:/user/" + user.getLogin();
+
+    }
+
+    @GetMapping("/user/{id}/avatar")
+    public void renderAvatar(@PathVariable Long id, HttpServletResponse response) throws IOException {
+
+        Optional<User> optionalUser = userService.findById(id);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+
+            byte[] image = new byte[user.getImage().length];
+            int i = 0;
+            for (byte b :
+                    user.getImage()) {
+                image[i++] = b;
+            }
+
+            response.setContentType("image/jpeg");
+            InputStream inputStream = new ByteArrayInputStream(image);
+            IOUtils.copy(inputStream, response.getOutputStream());
+
+        }
+
+
 
     }
 }

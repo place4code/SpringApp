@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class ImageServiceImpl implements ImageService {
 
-    UserService userService;
+    private UserService userService;
 
     public ImageServiceImpl(UserService userService) {
         this.userService = userService;
@@ -25,10 +25,6 @@ public class ImageServiceImpl implements ImageService {
         if (tempUser.isPresent()) {
             User user = tempUser.get();
 
-            System.out.println("ID: " + user.getId());
-            System.out.println("Pass: " + user.getPassword());
-            System.out.println("Confirmpass: " + user.getConfirmPassword());
-
             try {
                 Byte[] byteObject = new Byte[file.getBytes().length];
                 int i = 0;
@@ -37,20 +33,15 @@ public class ImageServiceImpl implements ImageService {
                     byteObject[i++] = b;
                 }
                 user.setImage(byteObject);
-                System.out.println("User's ID: " + user.getId());
-                System.out.println("Password: " + user.getPassword());
                 user.setConfirmPassword(user.getPassword());
-                System.out.println("Confirm: " + user.getConfirmPassword());
-                user.setConfirmPassword(user.getPassword());
+                user.setAvatar(true);
                 userService.save(user);
 
             } catch (IOException e) {
-
+                System.out.println("Problem with uploading");
             }
 
         }
-
-
 
         System.out.println("saveImage from ImageServiceImpl");
     }

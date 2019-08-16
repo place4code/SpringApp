@@ -64,12 +64,6 @@ public class ProfileController {
             //find user' favourite
             List<Fav> favourites = favService.findAllByUserId(profileOwner.getId());
 
-            if (profileOwner.isAvatar()) {
-                model.addAttribute("avatar", profileOwner.getLogin() + ".jpg");
-            } else {
-                model.addAttribute("avatar", "demo.jpg");
-            }
-
             model.addAttribute("owner", isOwner);
             model.addAttribute("comments", comments);
             model.addAttribute("likes", likes);
